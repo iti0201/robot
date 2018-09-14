@@ -1,5 +1,3 @@
-import math
-
 from commRaspMain import PiBot as PiBotBase
 from abc import ABC as AbstractBaseClass
 from abc import abstractmethod
@@ -84,7 +82,7 @@ def validate_speed_percentage(speed_function):
 
 
 class PiBot(PiBotBase):
-    def __init__(self, robot_nr):
+    def __init__(self, robot_nr=1):
         super().__init__()
 
         # Converters
@@ -159,7 +157,7 @@ class PiBot(PiBotBase):
         else:
             self._update_sensors()
 
-    def get_value_or_none_from_converter(self, converter, sensor_value, sensor_block_nr):
+    def _get_value_or_none_from_converter(self, converter, sensor_value, sensor_block_nr):
         try:
             value = converter.get(sensor_value)
         except OverflowError:
@@ -167,42 +165,42 @@ class PiBot(PiBotBase):
             self._adc_read(sensor_block_nr)
         return value
 
-    def get_value_from_converter(self, converter, sensor_index, sensor_block_nr):
+    def _get_value_from_converter(self, converter, sensor_index, sensor_block_nr):
         value = None
         self._update_sensor_block(sensor_block_nr)
         while value is None:
-            value = self.get_value_or_none_from_converter(converter, self.sensor[sensor_index], sensor_block_nr)
+            value = self._get_value_or_none_from_converter(converter, self.sensor[sensor_index], sensor_block_nr)
         return value
 
     def get_front_left_ir(self) -> float:
-        return self.get_value_from_converter(self.front_left_ir_converter, 14, 2)
+        return self._get_value_from_converter(self.front_left_ir_converter, 14, 2)
 
     def get_front_middle_ir(self) -> float:
-        return self.get_value_from_converter(self.front_middle_ir_converter, 7, 1)
+        return self._get_value_from_converter(self.front_middle_ir_converter, 7, 1)
 
     def get_front_right_ir(self) -> float:
-        return self.get_value_from_converter(self.front_right_ir_converter, 6, 1)
+        return self._get_value_from_converter(self.front_right_ir_converter, 6, 1)
 
     def get_front_irs(self) -> [float]:
         return [self.get_front_left_ir(), self.get_front_middle_ir(), self.get_front_right_ir()]
 
     def get_rear_left_straight_ir(self) -> float:
-        return self.get_value_from_converter(self.rear_left_straight_ir_converter, 2, 1)
+        return self._get_value_from_converter(self.rear_left_straight_ir_converter, 2, 1)
 
     def get_rear_left_diagonal_ir(self) -> float:
-        return self.get_value_from_converter(self.rear_left_diagonal_ir_converter, 1, 1)
+        return self._get_value_from_converter(self.rear_left_diagonal_ir_converter, 1, 1)
 
     def get_rear_left_side_ir(self) -> float:
-        return self.get_value_from_converter(self.rear_left_side_ir_converter, 0, 1)
+        return self._get_value_from_converter(self.rear_left_side_ir_converter, 0, 1)
 
     def get_rear_right_straight_ir(self) -> float:
-        return self.get_value_from_converter(self.rear_right_straight_ir_converter, 3, 1)
+        return self._get_value_from_converter(self.rear_right_straight_ir_converter, 3, 1)
 
     def get_rear_right_diagonal_ir(self) -> float:
-        return self.get_value_from_converter(self.rear_right_diagonal_ir_converter, 4, 1)
+        return self._get_value_from_converter(self.rear_right_diagonal_ir_converter, 4, 1)
 
     def get_rear_right_side_ir(self) -> float:
-        return self.get_value_from_converter(self.rear_right_side_ir_converter, 5, 1)
+        return self._get_value_from_converter(self.rear_right_side_ir_converter, 5, 1)
 
     def get_rear_irs(self) -> [float]:
         return [
@@ -269,65 +267,6 @@ class PiBot(PiBotBase):
     def get_left_wheel_encoder(self) -> int:
         self._update_encoders()
         return -int(self.encoder[1])
-
-    def _get_encoders_mean(self):
-        return (self.get_right_wheel_encoder() + self.get_left_wheel_encoder()) / 2
-
-    @staticmethod
-    def limit_speed(speed):
-        """
-        :param speed: speed percentage
-        :return: speed percentage limited to range -99 .. 99
-        """
-        return max(-99, min(99, speed))
-
-    @validate_speed_percentage
-    def move(self, speed_percentage: int, distance: float):
-        """
-        Move forward by distance
-        :param speed_percentage: -99 .. 99
-        :param distance: meters
-        """
-        DIFFERENCE_LIMIT = 10
-
-        wheel_circumference = math.pi * self.WHEEL_DIAMETER
-        right_wheel_speed = left_wheel_speed = speed_percentage
-
-        right_wheel_encoder_start = self.get_right_wheel_encoder()
-        left_wheel_encoder_start = self.get_left_wheel_encoder()
-
-        distance_in_degrees = ((distance / wheel_circumference) * 360 * self.TICK_PER_DEGREE) / 3
-
-        right_wheel_encoder_goal = right_wheel_encoder_start + distance_in_degrees
-        left_wheel_encoder_goal = left_wheel_encoder_start + distance_in_degrees
-
-        initial_difference = self.get_right_wheel_encoder() - self.get_left_wheel_encoder()
-
-        self.set_wheels_speed(speed_percentage)
-
-        change = 0.5
-
-        while self.get_right_wheel_encoder() < right_wheel_encoder_goal \
-                and self.get_left_wheel_encoder() < left_wheel_encoder_goal:
-
-            right_left_difference = self.get_right_wheel_encoder() - self.get_left_wheel_encoder() - initial_difference
-            left_right_difference = -right_left_difference
-
-            if right_left_difference > DIFFERENCE_LIMIT:
-                right_wheel_speed -= change
-                left_wheel_speed += change
-            elif left_right_difference > DIFFERENCE_LIMIT:
-                left_wheel_speed -= change
-                right_wheel_speed += change
-            else:
-                right_wheel_speed = left_wheel_speed = speed_percentage
-
-            right_wheel_speed = PiBot.limit_speed(right_wheel_speed)
-            left_wheel_speed = PiBot.limit_speed(left_wheel_speed)
-            self.set_right_wheel_speed(right_wheel_speed)
-            self.set_left_wheel_speed(left_wheel_speed)
-
-        self.set_wheels_speed(0)
 
     def set_grabber_height(self, height_percentage):
         """
