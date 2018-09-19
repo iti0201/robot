@@ -84,20 +84,22 @@ Järgmine funktsioon liigutab käppa lahti ja kinni. Argumendiks sobib jälle ar
 close_grabber(percentage)
 
 ## Näide
+```
 from PiBot import PiBot
 import rospy
 
-\# Teeme roboti instantsi
+# Teeme roboti instantsi
 robot = PiBot()
 
-\# Küsime väärtust eespoolsest keskmisest infrapuna sensorist ja salvestame selle muutujasse
+# Küsime väärtust eespoolsest keskmisest infrapuna sensorist ja salvestame selle muutujasse
 distance_from_object = robot.get_front_middle_ir()
 
-\# Sõidame objektile lähedamale kuni oleme sellest 20 cm kaugusel
+# Sõidame objektile lähedamale kuni oleme sellest 20 cm kaugusel
 robot.set_wheels_speed(30)
 while distance_from_object > 0.2:
   distance_from_object = robot.get_front_middle_ir()
     rospy.sleep(0.005)
     
-    \# Peatame roboti, kui oleme kohale jõudnud 20 cm kaugusele objektist
+    # Peatame roboti, kui oleme kohale jõudnud 20 cm kaugusele objektist
     robot.set_wheels_speed(0)
+```
