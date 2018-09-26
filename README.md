@@ -15,7 +15,7 @@ Kõik funktsioonid tuleb välja kutsuda selle objekti kaudu.
 
 Järgmised 3 funktsiooni panevad vastavalt kas vasaku või parema või mõlema ratta kiiruseks argumendina kaasa antud protsendi maksimaalsest kiirusest. Protsendid, mis sobivad, on vahemikus -99 kuni 99. Kui tahetakse tagurpidi liikuda, peab protsent olema negatiivne. Robot hakkab liikuma alates kiiruse protsendist 15 (ligikaudne).
 
-```
+```python
 set_left_wheel_speed(percentage)
 set_right_wheel_speed(percentage)
 set_wheels_speed(percentage)
@@ -23,14 +23,14 @@ set_wheels_speed(percentage)
 
 Järgmised kaks funktsiooni tagastavad vastavalt kas parema või vasaku ratta enkoodri väärtuse ehk mitu kraadi on ratas keerelnud programmi algusest peale. Enkoodrite täpsus on 1 kraad. Kui sõita ederpidi, suureneb väärtus, kui sõita tagurpidi, väheneb väärtus.
 
-```
+```python
 get_right_wheel_encoder()
 get_left_wheel_encoder()
 ```
 
 **Näide.** Teeme roboti objekti ja paneme ta paariks sekundiks otse sõitma
 
-```
+```python
 from PiBot import PiBot
 import rospy
 
@@ -44,7 +44,7 @@ robot.set_wheels_speed(0)
 ## Roboti sensorite uuendamine
 Roboti sensoreid uuendatakse automaatselt iga 5 millisekundi tagant. Funktsiooniga
 
-```
+```python
 set_update_time(update_time)
 ```
 
@@ -53,7 +53,7 @@ saab muuta seda aega, mille tagant sensoreid uuendataks. Sisendiks on uuendamise
 ## Roboti eespoolsed infrapunasensorid
 Roboti eespoolsed (see pool, kus on käpp) infrapunasensorid mõõdavad kaugust vahemikus 15 – 90 cm. Järgmised 3 funktsiooni tagastavad vastavalt vasaku, keskmise ja parema infrapunasensori väärtuse meetrites. Viimane funktsioon tagastab järjendi kõigist eespoolsetest infrapunasensorite väärtustest samas järjekorras nagu enne loetleti.
 
-```
+```python
 get_front_left_ir()
 get_front_middle_ir()
 get_front_right_ir()
@@ -65,7 +65,7 @@ get_front_irs()
 Tagumised infrapunasensorid mõõdavad kaugust vahemikus 2 kuni 16 cm.
 Järgmised 3 funktsiooni tagastavad vastavalt tagumise (see pool, kus pole käppa) vasakpoolse otsevaatava, diagonaalselt vaatava ja küljele vaatava infrapunasensori väärtused meetrites.
 
-```
+```python
 get_rear_left_straight_ir()
 get_rear_left_diagonal_ir()
 get_rear_left_side_ir()
@@ -73,7 +73,7 @@ get_rear_left_side_ir()
 
 Järgmised 3 funktsiooni tagastavad vastavalt tagumise parempoolse otsevaatava, diagonaalselt vaatava ja küljele vaatava infrapunasensori väärtused meetrites.
 
-```
+```python
 get_rear_right_straight_ir()
 get_rear_right_diagonal_ir()
 get_rear_right_side_ir()
@@ -81,7 +81,7 @@ get_rear_right_side_ir()
 
 Järgmistest funktsioonidest esimene tagastab kõikide tagumiste infrapunasensorite väärtused järjendis juba loetletud järjekorras. Teine funktsioon tagastab kõikide infrapunasensorite väärtused järjendis eespoolt alustades loetletud järjekorras.
 
-```
+```python
 get_rear_irs()
 get_irs()
 ```
@@ -91,7 +91,7 @@ Roboti joonejärgimissensorid asuvad roboti all tagapool. Need tagastavad väär
 Funktsioonide pooled on määratud nii, et vaadatakse ettepoole, kuigi sensorid asuvad tagapool.
 Järgmised 3 funktsiooni tagastavad vastavalt kõige vasakpoolsema, vasakult teise ja vasakult kolmanda ehk vasakpoolse keskmise sensori väärtused.
 
-```
+```python
 get_leftmost_line_sensor()
 get_second_line_sensor_from_left()
 get_third_line_sensor_from_left()
@@ -99,7 +99,7 @@ get_third_line_sensor_from_left()
 
 Järgmised 3 funktsiooni tagastavad vastavalt kõige parempoolsema, paremalt teise ja paremalt kolmanda ehk parempoolse keskmise sensori väärtused.
 
-```
+```python
 get_rightmost_line_sensor()
 get_second_line_sensor_from_right()
 get_third_line_sensor_from_right()
@@ -109,18 +109,18 @@ get_third_line_sensor_from_right()
 Käppa saab liigutada üles ja alla ning lahti ja kinni.
 Järgmine funktsioon liigutab käppa üles ja alla. Argumendiks sobib arv vahemikus 0 kuni 100, kus 0 on kõige madalam käpa kõrgus ja 100 on kõige kõrgem.
 
-```
+```python
 set_grabber_height(height_percentage)
 ```
 
 Järgmine funktsioon liigutab käppa lahti ja kinni. Argumendiks sobib jälle arv vahemikus 0 kuni 100, kus 0 on käpa kõige lahtisem olek ja 100 on käpa kõige kinnisem olek.
 
-```
+```python
 close_grabber(percentage)
 ```
 
 ## Näide
-```
+```python
 from PiBot import PiBot
 import rospy
 
