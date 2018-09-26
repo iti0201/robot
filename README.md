@@ -4,7 +4,7 @@
 
 Iga programmi alguses tuleb import-ida roboti klass ja luua selle objekt:
 
-```
+```python
 from PiBot import PiBot
 robot = PiBot()
 ```
