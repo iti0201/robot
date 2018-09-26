@@ -51,7 +51,7 @@ set_update_time(update_time)
 saab muuta seda aega, mille tagant sensoreid uuendataks. Sisendiks on uuendamise ajavahemik sekundites. Uuendamise ajale saab ligi läbi objektimuutuja `UPDATE_TIME`.
 
 ## Roboti eespoolsed infrapunasensorid
-Roboti eespoolsed (see pool, kus on käpp) infrapunasensorid mõõdavad kaugust vahemikus 15 – 90 cm. Järgmised 3 funktsiooni tagastavad vastavalt vasaku, keskmise ja parema infrapunasensori väärtuse meetrites. Viimane funktsioon tagastab list-i kõigist eespoolsetest infrapunasensorite väärtustest samas järjekorras nagu enne loetleti.
+Roboti eespoolsed (see pool, kus on käpp) infrapunasensorid mõõdavad kaugust vahemikus 15 – 90 cm. Järgmised 3 funktsiooni tagastavad vastavalt vasaku, keskmise ja parema infrapunasensori väärtuse meetrites. Viimane funktsioon tagastab järjendi kõigist eespoolsetest infrapunasensorite väärtustest samas järjekorras nagu enne loetleti.
 
 ```
 get_front_left_ir()
@@ -79,7 +79,7 @@ get_rear_right_diagonal_ir()
 get_rear_right_side_ir()
 ```
 
-Järgmistest funktsioonidest esimene tagastab kõikide tagumiste infrapunasensorite väärtused list-is juba loetletud järjekorras. Teine funktsioon tagastab kõikide infrapunasensorite väärtused list-is eespoolt alustades loetletud järjekorras.
+Järgmistest funktsioonidest esimene tagastab kõikide tagumiste infrapunasensorite väärtused järjendis juba loetletud järjekorras. Teine funktsioon tagastab kõikide infrapunasensorite väärtused järjendis eespoolt alustades loetletud järjekorras.
 
 ```
 get_rear_irs()
