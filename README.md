@@ -119,6 +119,9 @@ Järgmine funktsioon liigutab käppa lahti ja kinni. Argumendiks sobib jälle ar
 close_grabber(percentage)
 ```
 
+## Konstandid
+PiBoti instansilt saab küsida ka robotiga seotud konstante. Roboti ratta diameeter meetrites on kirjas klassimuutujas `WHEEL_DIAMETER` ja roboti telje pikkus meetrites on klassimuutujas `AXIS_LENGTH`.
+
 ## Näide
 ```python
 from PiBot import PiBot
