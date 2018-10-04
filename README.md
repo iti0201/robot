@@ -45,7 +45,7 @@ robot.set_wheels_speed(0)
 Roboti sensoreid uuendatakse automaatselt iga 5 millisekundi tagant. Uuendamise ajale saab ligi läbi klassimuutuja `UPDATE_TIME`.
 
 ## Roboti eespoolsed infrapunasensorid
-Roboti eespoolsed (see pool, kus on käpp) infrapunasensorid mõõdavad kaugust vahemikus 15 – 90 cm. Järgmised 3 funktsiooni tagastavad vastavalt vasaku, keskmise ja parema infrapunasensori väärtuse meetrites. Viimane funktsioon tagastab järjendi kõigist eespoolsetest infrapunasensorite väärtustest samas järjekorras nagu enne loetleti.
+Roboti eespoolsed (see pool, kus on käpp) infrapunasensorid mõõdavad kaugust vahemikus 16 – 100 cm. Järgmised 3 funktsiooni tagastavad vastavalt vasaku, keskmise ja parema infrapunasensori väärtuse meetrites. Viimane funktsioon tagastab järjendi kõigist eespoolsetest infrapunasensorite väärtustest samas järjekorras nagu enne loetleti.
 
 ```python
 get_front_left_ir()
