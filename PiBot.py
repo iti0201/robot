@@ -118,6 +118,7 @@ class PiBot(PiBotBase):
         self.UPDATE_TIME = 0.005
         self.SENSOR_LIMITS = [(100, 1000)] * 6 + [(50, 800)] * 2 + [(0, 1023)] * 6 + [(50, 800)]
         self.WHEEL_DIAMETER = 0.025
+        self.AXIS_LENGTH = 0.14
         self.TICK_PER_DEGREE = 1
 
     def set_update_time(self, update_time):
