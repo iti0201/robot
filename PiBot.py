@@ -29,7 +29,7 @@ class SensorConverter(AbstractBaseClass):
         """
         converters = []
 
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding="UTF-8") as file:
             for _ in range(3):
                 line = file.readline()
                 a, b, c, d, e = map(float, line.split())
