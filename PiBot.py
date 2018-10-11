@@ -121,7 +121,7 @@ class PiBot(PiBotBase):
         self.AXIS_LENGTH = 0.14
         self.TICK_PER_DEGREE = 1
         
-    def is_simulation():
+    def is_simulation(self):
         return False
 
     def set_update_time(self, update_time):
