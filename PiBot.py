@@ -40,11 +40,11 @@ class SensorConverter(AbstractBaseClass):
                 converters.append(IRSensorConverter(a, b))
             try:
                 line = file.readline()
-                order, open, up, closed, down = map(int, line.split())
+                order, open_, up, closed, down = map(int, line.split())
             except:
-                order, open, up, closed, down = 1, 33, 39, 23, 29
+                order, open_, up, closed, down = 1, 33, 39, 23, 29
             converters.append(GrabberHeightConverter(order, up, down))
-            converters.append(GrabberCloseConverter(order, open, closed))
+            converters.append(GrabberCloseConverter(order, open_, closed))
 
         return converters
 
