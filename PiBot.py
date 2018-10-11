@@ -122,7 +122,7 @@ class PiBot(PiBotBase):
         self.TICK_PER_DEGREE = 1
         
     def is_simulation():
-        return false
+        return False
 
     def set_update_time(self, update_time):
         self.UPDATE_TIME = update_time
