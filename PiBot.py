@@ -1,4 +1,4 @@
-# from commRaspMain import PiBot as PiBotBase
+from commRaspMain import PiBot as PiBotBase
 from abc import ABC as AbstractBaseClass
 from abc import abstractmethod
 import time
@@ -113,7 +113,7 @@ def validate_speed_percentage(speed_function):
     return validate_speed_percentage_arg(1)(speed_function)
 
 
-class PiBot():
+class PiBot(PiBotBase):
     def __init__(self):
         super().__init__()
 
