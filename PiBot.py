@@ -38,6 +38,7 @@ class SensorConverter(AbstractBaseClass):
                 line = file.readline()
                 a, b = map(float, line.split())
                 converters.append(IRSensorConverter(a, b))
+            converters.append(EncoderConverter(int(file.readline().strip())))
             try:
                 line = file.readline()
                 order, open_, down, closed, up = map(int, line.split())
@@ -71,6 +72,14 @@ class GrabberCloseConverter(SensorConverter):
         slope = (self.open - self.closed) / 100
         y = slope * (percentage - 100) + self.open
         return y
+
+
+class EncoderConverter(SensorConverter):
+    def __init__(self, degree_per_tick):
+        self.degree_per_tick = degree_per_tick
+
+    def get(self, x: int):
+        return -self.degree_per_tick * x
 
 
 class SharpSensorConverter(SensorConverter):
@@ -131,6 +140,7 @@ class PiBot(PiBotBase):
         self.rear_right_straight_ir_converter, \
         self.rear_right_diagonal_ir_converter, \
         self.rear_right_side_ir_converter, \
+        self.encoder_converter, \
         self.grabber_height_converter, \
         self.grabber_close_converter = self.converters
 
@@ -304,11 +314,11 @@ class PiBot(PiBotBase):
 
     def get_right_wheel_encoder(self) -> int:
         self._update_encoders()
-        return -int(self.encoder[0]) * self.DEGREE_PER_TICK
+        return self.encoder_converter.get(self.encoder[0])
 
     def get_left_wheel_encoder(self) -> int:
         self._update_encoders()
-        return -int(self.encoder[1]) * self.DEGREE_PER_TICK
+        return self.encoder_converter.get(self.encoder[1])
 
     def _enable_servo_if_not(self):
         if not self.servo_enabled:
