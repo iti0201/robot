@@ -1,0 +1,140 @@
+Usarti seadistus:
+
+	baudrate -> saatmise sagedus
+	timeout  -> sınumite ooteaeg sekundites
+
+
+muutujad:
+
+	battery -> muutuju kuhu (_battery_read) salvestab aku adc v‰‰rtuse
+	
+	encoder -> jada kuhu (_encoders_get) salvestab enkoodrite v‰‰rtused
+	
+		[0] - vasak enkooder
+		[1] - parem enkooder
+		
+	imu		-> muutuja kuhu (_imu_read) v‰‰rtused salvestab
+
+		[0] - x telje kiirendus
+		[1] - y telje kiirendus
+		[2] - z telje kiirendus
+		[3] - temperatuur
+		[4] - x teljel g¸roskoop
+		[5] - y teljel g¸roskoop
+		[6] - z teljel g¸roskoop
+		
+	sensor  -> kaugus ja joone andurite v‰‰rtuste jada
+			
+		[00] - parem kırvalevaatav kaugusandur			   * P
+		[01] - parem diagonaal kaugusandur				 *
+		[02] - parem ettevaatav kaugusandur				*
+				
+		[03] - vasak ettevaatav kaugusandur				*
+		[04] - vasak diagonaal kaugusandur				 *
+		[05] - vasak kırvalevaatav kaugusandur			   * V
+				
+		[06] - vasak Sharpi kaugusandur		
+		[07] - keskmine Sharpi kaugusandur		
+				
+		[08] - parem ‰‰rmine jooneandur					   * P
+		[09] - paremalt teine jooneandur				*
+		[10] - parem keskmine jooneandur				*
+				
+		[11] - vasak keskmine jooneandur				*
+		[12] - vasakult teine jooneandur				*
+		[13] - vasak ‰‰rmine jooneandur					   * V
+				
+		[14] - parem Sharpi kaugusandur		
+ 		[15] - t¸hi anduri pesa		
+				
+		
+seadistus funktsioonid:
+
+	_adc_conf(conf=3) -> ADC andurite lugemise seadistuse funktsioon (algv‰‰rtus = 0)
+		conf:							 (vaikimisi  = 3)
+			0 - andurid on v‰lja l¸litatud
+			1 - k‰ivitatud andurid 0 kuni 7
+			2 - k‰ivitatud andurid 8 kuni 15
+			3 - k‰ivitatud andurid 0 kuni 15
+		
+	_buzzer_set(buzzer) -> plaadil oleva kılar suht signaali tugevus seadistus
+		buzzer:
+		 	0   - vaikus
+			255 - maksimaalselt vali
+
+	_encoders_enable() -> enkoodrite k‰ivitus ja v‰‰rtuste nullimine
+
+	_imu_enable() -> k‰ivitan ja algseadistab IMU mooduli
+
+	_motors_enable() -> l¸litab mootoritele voolus sisse ja vıimaldab nende juhtimise
+
+	_motorR_set(val= 0) -> seadistab parempoolse mootori kiirus v‰‰rtuse val-iks
+		val: 
+			-99 - maksimaalne kiirus tagurpidi
+			0   - pidurdamine
+			 99 - maksimaalne kiirus edasi
+
+	_motorL_set(val= 0) -> seadistab vasakpoolse mootori kiirus v‰‰rtuse val-iks
+		val: 
+			-99 - maksimaalne kiirus tagurpidi
+			0   - pidurdamine
+			 99 - maksimaalne kiirus edasi
+
+	_motorB_set(val= 0) -> seadistab mılema mootori kiirus v‰‰rtuse val-iks
+		val: 
+			-99 - maksimaalne kiirus tagurpidi
+			0   - pidurdamine
+			 99 - maksimaalne kiirus edasi
+
+	_servo_enable() -> vıimaldab servo juhtimise
+
+	_servo_one_set(val) seadistab esimese servomootori v‰‰rtuse val-iks
+		val:
+			v‰‰rtused 0 kuni 255
+			eeldus on sobivad v‰‰rtused 25 kuni 36
+			haaratsi v‰‰rtused
+				25 - haarats t‰iesti koos 
+				36 - haarats t‰iesti lahti
+			
+	_servo_two_set(val) seadistab teise servomootori v‰‰rtuse val-iks
+		val:
+			v‰‰rtused 0 kuni 255
+			eeldus on sobivad v‰‰rtused 30 kuni 42
+			haaratsi nurk:
+				30 - vıimalikult ¸leval
+				42 - t‰iesti all
+				
+lugemise funktsioonid:
+
+	_adc_read(conf) -> kirjtab vastavad andurite v‰‰rtused jadasse sensor
+			conf:							 (vaikimisi  = 3)
+			1 - loeb andurid 0 kuni 7
+			2 - loeb andurid 8 kuni 15
+			3 - loeb andurid 0 kuni 15
+
+	_battery_read() -> salvestab ADC aku v‰‰rtuse muutujasse battery
+
+	
+	_encoders_get()	-> salvestab enkoodrite v‰‰rtused jadasse encoder 
+
+	_imu_read() -> salvestab IMU mooduli v‰‰rtused muutujasse imu
+	
+Kasutamine:
+
+	n‰ide:
+		from commRaspMain import PiBot
+	
+		mybot = PiBot()
+		
+		mybot._motors_enable()
+		
+		mybot._motorB_set(50)
+		
+	selgitus
+		
+		import kaasab PiBot klassi faili
+		
+		mybot on handler PiBot-ile
+		
+		kıik funktsioonid  ja muutujad on klassi PiBot kuuluvad funktsioonid
+		ehk tuleb kutsuda l‰bi PiBot handleri ehk antud juhul mybot 
