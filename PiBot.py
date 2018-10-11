@@ -120,6 +120,9 @@ class PiBot(PiBotBase):
         self.WHEEL_DIAMETER = 0.025
         self.AXIS_LENGTH = 0.14
         self.TICK_PER_DEGREE = 1
+        
+    def is_simulation():
+        return false
 
     def set_update_time(self, update_time):
         self.UPDATE_TIME = update_time
