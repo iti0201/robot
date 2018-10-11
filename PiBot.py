@@ -1,4 +1,4 @@
-from commRaspMain import PiBot as PiBotBase
+# from commRaspMain import PiBot as PiBotBase
 from abc import ABC as AbstractBaseClass
 from abc import abstractmethod
 import time
@@ -38,8 +38,39 @@ class SensorConverter(AbstractBaseClass):
                 line = file.readline()
                 a, b = map(float, line.split())
                 converters.append(IRSensorConverter(a, b))
+            try:
+                line = file.readline()
+                order, open, up, closed, down = map(int, line.split())
+            except:
+                order, open, up, closed, down = 1, 33, 39, 23, 29
+            converters.append(GrabberHeightConverter(order, up, down))
+            converters.append(GrabberCloseConverter(order, open, closed))
 
         return converters
+
+
+class GrabberHeightConverter(SensorConverter):
+    def __init__(self, order, up, down):
+        self.right_order = bool(order)
+        self.up = up
+        self.down = down
+
+    def get(self, percentage: int):
+        slope = (self.down - self.up) / 100
+        y = slope * (percentage - 100) + self.down
+        return y
+
+
+class GrabberCloseConverter(SensorConverter):
+    def __init__(self, order, open, closed):
+        self.right_order = bool(order)
+        self.open = open
+        self.closed = closed
+
+    def get(self, percentage: int):
+        slope = (self.open - self.closed) / 100
+        y = slope * (percentage - 100) + self.open
+        return y
 
 
 class SharpSensorConverter(SensorConverter):
@@ -82,7 +113,7 @@ def validate_speed_percentage(speed_function):
     return validate_speed_percentage_arg(1)(speed_function)
 
 
-class PiBot(PiBotBase):
+class PiBot():
     def __init__(self):
         super().__init__()
 
@@ -99,7 +130,9 @@ class PiBot(PiBotBase):
         self.rear_left_side_ir_converter, \
         self.rear_right_straight_ir_converter, \
         self.rear_right_diagonal_ir_converter, \
-        self.rear_right_side_ir_converter = self.converters
+        self.rear_right_side_ir_converter, \
+        self.grabber_height_converter, \
+        self.grabber_close_converter = self.converters
 
         # Initialize robot
         self._motors_enable()
@@ -278,13 +311,19 @@ class PiBot(PiBotBase):
         :param height: 0 .. 100
         :return:
         """
-        y = -0.12 * height_percentage + 42
-        self._servo_two_set(y)
+        y = self.grabber_height_converter.get(height_percentage)
+        if self.grabber_close_converter.order_right:
+            self._servo_two_set(y)
+        else:
+            self._servo_one_set(y)
 
     def close_grabber(self, percentage):
         """
         :param percentage: 0 .. 100
         :return:
         """
-        y = -0.11 * percentage + 36
-        self._servo_one_set(y)
+        y = self.grabber_close_converter.get(percentage)
+        if self.grabber_close_converter.order_right:
+            self._servo_one_set(y)
+        else:
+            self._servo_two_set(y)
