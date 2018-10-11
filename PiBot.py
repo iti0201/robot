@@ -137,9 +137,10 @@ class PiBot(PiBotBase):
         # Initialize robot
         self._motors_enable()
         self._encoders_enable()
-        self._servo_enable()
-        self.set_grabber_height(100)
-        self.close_grabber(100)
+        self.servo_enabled = False
+        # self._servo_enable()
+        # self.set_grabber_height(100)
+        # self.close_grabber(100)
         self._adc_conf(3)
 
         # Initialize timestamps
@@ -152,8 +153,8 @@ class PiBot(PiBotBase):
         self.SENSOR_LIMITS = [(100, 1000)] * 6 + [(50, 800)] * 2 + [(0, 1023)] * 6 + [(50, 800)]
         self.WHEEL_DIAMETER = 0.025
         self.AXIS_LENGTH = 0.14
-        self.TICK_PER_DEGREE = 1
-        
+        self.DEGREE_PER_TICK = 4
+
     def is_simulation(self):
         return False
 
@@ -303,17 +304,22 @@ class PiBot(PiBotBase):
 
     def get_right_wheel_encoder(self) -> int:
         self._update_encoders()
-        return -int(self.encoder[0])
+        return -int(self.encoder[0]) * self.DEGREE_PER_TICK
 
     def get_left_wheel_encoder(self) -> int:
         self._update_encoders()
-        return -int(self.encoder[1])
+        return -int(self.encoder[1]) * self.DEGREE_PER_TICK
+
+    def _enable_servo_if_not(self):
+        if not self.servo_enabled:
+            self._servo_enable()
 
     def set_grabber_height(self, height_percentage):
         """
         :param height: 0 .. 100
         :return:
         """
+        self._enable_servo_if_not()
         y = self.grabber_height_converter.get(height_percentage)
         if self.grabber_close_converter.right_order:
             self._servo_two_set(y)
@@ -325,6 +331,7 @@ class PiBot(PiBotBase):
         :param percentage: 0 .. 100
         :return:
         """
+        self._enable_servo_if_not()
         y = self.grabber_close_converter.get(percentage)
         if self.grabber_close_converter.right_order:
             self._servo_one_set(y)
