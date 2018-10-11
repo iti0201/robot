@@ -2,6 +2,7 @@ from commRaspMain import PiBot as PiBotBase
 from abc import ABC as AbstractBaseClass
 from abc import abstractmethod
 import time
+import os
 
 
 def pv(**kwargs):
@@ -28,7 +29,7 @@ class SensorConverter(AbstractBaseClass):
         """
         converters = []
 
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding="utf-8-sig") as file:
             for _ in range(3):
                 line = file.readline()
                 a, b, c, d, e = map(float, line.split())
@@ -82,8 +83,11 @@ def validate_speed_percentage(speed_function):
 
 
 class PiBot(PiBotBase):
-    def __init__(self, robot_nr=1):
+    def __init__(self):
         super().__init__()
+
+        # Read robot number
+        robot_nr = int(os.environ["ROBOT_ID"])
 
         # Converters
         self.converters = SensorConverter.make_converters("converters{}.txt".format(robot_nr))
@@ -114,7 +118,11 @@ class PiBot(PiBotBase):
         self.UPDATE_TIME = 0.005
         self.SENSOR_LIMITS = [(100, 1000)] * 6 + [(50, 800)] * 2 + [(0, 1023)] * 6 + [(50, 800)]
         self.WHEEL_DIAMETER = 0.025
+        self.AXIS_LENGTH = 0.14
         self.TICK_PER_DEGREE = 1
+        
+    def is_simulation(self):
+        return False
 
     def set_update_time(self, update_time):
         self.UPDATE_TIME = update_time

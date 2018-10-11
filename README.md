@@ -42,16 +42,10 @@ robot.set_wheels_speed(0)
 ```
 
 ## Roboti sensorite uuendamine
-Roboti sensoreid uuendatakse automaatselt iga 5 millisekundi tagant. Funktsiooniga
-
-```python
-set_update_time(update_time)
-```
-
-saab muuta seda aega, mille tagant sensoreid uuendataks. Sisendiks on uuendamise ajavahemik sekundites. Uuendamise ajale saab ligi läbi klassimuutuja `UPDATE_TIME`.
+Roboti sensoreid uuendatakse automaatselt iga 5 millisekundi tagant. Uuendamise ajale saab ligi läbi klassimuutuja `UPDATE_TIME`.
 
 ## Roboti eespoolsed infrapunasensorid
-Roboti eespoolsed (see pool, kus on käpp) infrapunasensorid mõõdavad kaugust vahemikus 15 – 90 cm. Järgmised 3 funktsiooni tagastavad vastavalt vasaku, keskmise ja parema infrapunasensori väärtuse meetrites. Viimane funktsioon tagastab järjendi kõigist eespoolsetest infrapunasensorite väärtustest samas järjekorras nagu enne loetleti.
+Roboti eespoolsed (see pool, kus on käpp) infrapunasensorid mõõdavad kaugust vahemikus 16 – 100 cm. Järgmised 3 funktsiooni tagastavad vastavalt vasaku, keskmise ja parema infrapunasensori väärtuse meetrites. Viimane funktsioon tagastab järjendi kõigist eespoolsetest infrapunasensorite väärtustest samas järjekorras nagu enne loetleti.
 
 ```python
 get_front_left_ir()
@@ -118,6 +112,12 @@ Järgmine funktsioon liigutab käppa lahti ja kinni. Argumendiks sobib jälle ar
 ```python
 close_grabber(percentage)
 ```
+
+## Konstandid
+PiBoti instansilt saab küsida ka robotiga seotud konstante. Roboti ratta diameeter meetrites on kirjas klassimuutujas `WHEEL_DIAMETER` ja roboti telje pikkus meetrites on klassimuutujas `AXIS_LENGTH`.
+
+## Kas oled simulatsioonis
+Robotilt saab küsida ka, kas kood jookseb simulatsioonis või mitte meetodiga `is_simulation()`.
 
 ## Näide
 ```python
