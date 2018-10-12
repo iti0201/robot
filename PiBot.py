@@ -45,7 +45,7 @@ class SensorConverter(AbstractBaseClass):
             except:
                 order, open_, down, closed, up = 1, 33, 39, 23, 29
             converters.append(GrabberHeightConverter(order, up, down))
-            converters.append(GrabberCloseConverter(order, closed, open))
+            converters.append(GrabberCloseConverter(order, closed, open_))
 
         return converters
 
