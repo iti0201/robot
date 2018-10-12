@@ -144,6 +144,8 @@ class PiBot(PiBotBase):
         self.grabber_height_converter, \
         self.grabber_close_converter = self.converters
 
+        print(self.grabber_close_converter.right_order)
+
         # Initialize robot
         self._motors_enable()
         self._encoders_enable()
