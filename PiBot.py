@@ -79,7 +79,7 @@ class EncoderConverter(SensorConverter):
         self.degree_per_tick = degree_per_tick
 
     def get(self, x: int):
-        return -self.degree_per_tick * x
+        return -self.degree_per_tick * int(x)
 
 
 class SharpSensorConverter(SensorConverter):
