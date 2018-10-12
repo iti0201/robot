@@ -149,8 +149,8 @@ class PiBot(PiBotBase):
         self._encoders_enable()
         self.servo_enabled = False
         self._servo_enable()
-        self.set_grabber_height(100)
-        self.close_grabber(100)
+        self.set_grabber_height(50)
+        self.close_grabber(50)
         self._adc_conf(3)
 
         # Initialize timestamps
