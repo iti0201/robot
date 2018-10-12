@@ -1,4 +1,4 @@
-from commRaspMain import PiBot as PiBotBase
+# from commRaspMain import PiBot as PiBotBase
 from abc import ABC as AbstractBaseClass
 from abc import abstractmethod
 import time
@@ -44,8 +44,8 @@ class SensorConverter(AbstractBaseClass):
                 order, open_, down, closed, up = map(int, line.split())
             except:
                 order, open_, down, closed, up = 1, 33, 39, 23, 29
-            converters.append(GrabberHeightConverter(order, down, up))
-            converters.append(GrabberCloseConverter(order, open_, closed))
+            converters.append(GrabberHeightConverter(order, up, down))
+            converters.append(GrabberCloseConverter(order, closed, open))
 
         return converters
 
@@ -122,7 +122,7 @@ def validate_speed_percentage(speed_function):
     return validate_speed_percentage_arg(1)(speed_function)
 
 
-class PiBot(PiBotBase):
+class PiBot():
     def __init__(self):
         super().__init__()
 
@@ -143,8 +143,6 @@ class PiBot(PiBotBase):
         self.encoder_converter, \
         self.grabber_height_converter, \
         self.grabber_close_converter = self.converters
-
-        print(self.grabber_close_converter.right_order)
 
         # Initialize robot
         self._motors_enable()
