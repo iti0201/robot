@@ -329,7 +329,6 @@ class PiBot(PiBotBase):
         :param height: 0 .. 100
         :return:
         """
-        self._enable_servo_if_not()
         y = self.grabber_height_converter.get(height_percentage)
         if self.grabber_close_converter.right_order:
             self._servo_two_set(y)
@@ -341,7 +340,6 @@ class PiBot(PiBotBase):
         :param percentage: 0 .. 100
         :return:
         """
-        self._enable_servo_if_not()
         y = self.grabber_close_converter.get(percentage)
         if self.grabber_close_converter.right_order:
             self._servo_one_set(y)
