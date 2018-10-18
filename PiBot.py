@@ -102,6 +102,8 @@ class IRSensorConverter(SensorConverter):
 
     def get(self, x: int) -> float:
         value = (self.a * x) / (self.b + x)
+        if value < 0:
+            return 18
         return value / 100
 
 
