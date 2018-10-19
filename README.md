@@ -119,6 +119,22 @@ PiBoti instansilt saab küsida ka robotiga seotud konstante. Roboti ratta diamee
 ## Kas oled simulatsioonis
 Robotilt saab küsida ka, kas kood jookseb simulatsioonis või mitte meetodiga `is_simulation()`.
 
+### Näide
+
+```
+from PiBot import PiBot
+
+# Create a robot instance
+robot = PiBot()
+
+if robot.is_simulation():
+    # Running in simulation
+    speed = 15
+else:
+    # Running in real life
+    speed = 20
+```
+
 ## Näide
 ```python
 from PiBot import PiBot
