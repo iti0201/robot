@@ -139,3 +139,35 @@ while distance_from_object > 0.2:
 # Stop the robot when done
 robot.set_wheels_speed(0)
 ```
+
+# rospy
+
+## sleep(duration)
+
+Programmi tööd saab "pausile" panna, kasutades `sleep(duration)` käsku. Argument on aeg sekundites.
+
+### Näide
+
+```
+import rospy
+
+print("Good news...")
+rospy.sleep(2)
+print("everyone!")
+```
+
+## get_time()
+
+Ajaga tegevuste (nt taimeri) jaoks on võimalik kasutada `get_time()` funktsiooni. Funktsioon tagastab mitu sekundit on möödunud 1970. aasta 1. jaanuari keskööst.
+
+### Näide
+
+```
+import rospy
+
+start_time = rospy.get_time()
+print("Time at start is {}".format(start_time))
+while rospy.get_time() + 5.0 > start_time:
+    print("Well, I'm doing something...")
+print("I did something for 5 seconds!")
+```
