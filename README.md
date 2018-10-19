@@ -169,5 +169,6 @@ start_time = rospy.get_time()
 print("Time at start is {}".format(start_time))
 while start_time + 5.0 > rospy.get_time():
     print("Well, I'm doing something...")
+    rospy.sleep(1)
 print("I did something for 5 seconds!")
 ```
