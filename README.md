@@ -167,7 +167,7 @@ import rospy
 
 start_time = rospy.get_time()
 print("Time at start is {}".format(start_time))
-while rospy.get_time() + 5.0 > start_time:
+while start_time + 5.0 > rospy.get_time():
     print("Well, I'm doing something...")
 print("I did something for 5 seconds!")
 ```
