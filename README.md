@@ -21,7 +21,9 @@ set_right_wheel_speed(percentage)
 set_wheels_speed(percentage)
 ```
 
-Järgmised kaks funktsiooni tagastavad vastavalt kas parema või vasaku ratta enkoodri väärtuse ehk mitu kraadi on ratas keerelnud programmi algusest peale. Enkoodrite täpsus on 1 kraad. Kui sõita ederpidi, suureneb väärtus, kui sõita tagurpidi, väheneb väärtus.
+## Koodrid
+
+Järgmised kaks funktsiooni tagastavad vastavalt kas parema või vasaku ratta koodri väärtuse ehk mitu kraadi on ratas pöörelnud programmi algusest peale. Kooder tagastab väärtuse täisarvuna. Kui sõita edaspidi, suureneb väärtus, kui sõita tagurpidi, väheneb väärtus.
 
 ```python
 get_right_wheel_encoder()
