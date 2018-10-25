@@ -21,7 +21,9 @@ set_right_wheel_speed(percentage)
 set_wheels_speed(percentage)
 ```
 
-Järgmised kaks funktsiooni tagastavad vastavalt kas parema või vasaku ratta enkoodri väärtuse ehk mitu kraadi on ratas keerelnud programmi algusest peale. Enkoodrite täpsus on 1 kraad. Kui sõita ederpidi, suureneb väärtus, kui sõita tagurpidi, väheneb väärtus.
+## Koodrid
+
+Järgmised kaks funktsiooni tagastavad vastavalt kas parema või vasaku ratta koodri väärtuse ehk mitu kraadi on ratas pöörelnud programmi algusest peale. Kooder tagastab väärtuse täisarvuna. Kui sõita edaspidi, suureneb väärtus, kui sõita tagurpidi, väheneb väärtus.
 
 ```python
 get_right_wheel_encoder()
@@ -119,6 +121,22 @@ PiBoti instansilt saab küsida ka robotiga seotud konstante. Roboti ratta diamee
 ## Kas oled simulatsioonis
 Robotilt saab küsida ka, kas kood jookseb simulatsioonis või mitte meetodiga `is_simulation()`.
 
+### Näide
+
+```
+from PiBot import PiBot
+
+# Create a robot instance
+robot = PiBot()
+
+if robot.is_simulation():
+    # Running in simulation
+    speed = 15
+else:
+    # Running in real life
+    speed = 20
+```
+
 ## Näide
 ```python
 from PiBot import PiBot
@@ -138,4 +156,38 @@ while distance_from_object > 0.2:
     
 # Stop the robot when done
 robot.set_wheels_speed(0)
+```
+
+# rospy
+
+## sleep(duration)
+
+Programmi tööd saab "pausile" panna, kasutades `sleep(duration)` käsku. Argument on aeg sekundites.
+
+### Näide
+
+```
+import rospy
+
+print("Good news...")
+rospy.sleep(2)
+print("everyone!")
+```
+
+## get_time()
+
+Ajaga tegevuste (nt taimeri) jaoks on võimalik kasutada `get_time()` funktsiooni. Funktsioon tagastab mitu sekundit on möödunud 1970. aasta 1. jaanuari keskööst.
+
+### Näide
+
+```
+import rospy
+
+start_time = rospy.get_time()
+print("Time at start is {}".format(start_time))
+while start_time + 5.0 > rospy.get_time():
+    print("Well, I'm doing something...")
+    rospy.sleep(1)
+print("I did something for 5 seconds!")
+print("Time at end is {}".format(rospy.get_time()))
 ```
