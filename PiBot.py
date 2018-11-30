@@ -106,6 +106,17 @@ class IRSensorConverter(SensorConverter):
             return 0.18
         return value / 100
 
+def validate_grabber_percentage_arg(i: int):
+    def validate_grabber_percentage(grb_function):
+        def validate_percentage(*args):
+            percentage = args[i]
+            if not 0 <= percentage <= 100:
+                raise ValueError("Speed percentage must be in range -99 .. 99")
+            return grb_function(*args)
+
+        return validate_percentage
+
+    return validate_grabber_percentage
 
 def validate_speed_percentage_arg(i: int):
     def validate_speed_percentage(speed_function):
@@ -123,6 +134,8 @@ def validate_speed_percentage_arg(i: int):
 def validate_speed_percentage(speed_function):
     return validate_speed_percentage_arg(1)(speed_function)
 
+def validate_grabber_percentage(grb_function):
+    return validate_grabber_percentage_arg(1)(grb_function)
 
 class PiBot(PiBotBase):
     def __init__(self):
@@ -326,6 +339,7 @@ class PiBot(PiBotBase):
         if not self.servo_enabled:
             self._servo_enable()
 
+    @validate_grabber_percentage
     def set_grabber_height(self, height_percentage):
         """
         :param height: 0 .. 100
@@ -337,6 +351,7 @@ class PiBot(PiBotBase):
         else:
             self._servo_one_set(y)
 
+    @validate_grabber_percentage
     def close_grabber(self, percentage):
         """
         :param percentage: 0 .. 100
