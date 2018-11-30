@@ -111,7 +111,7 @@ def validate_grabber_percentage_arg(i: int):
         def validate_percentage(*args):
             percentage = args[i]
             if not 0 <= percentage <= 100:
-                raise ValueError("Speed percentage must be in range -99 .. 99")
+                raise ValueError("Grabber percentage must be in range 0 .. 100")
             return grb_function(*args)
 
         return validate_percentage
@@ -123,7 +123,7 @@ def validate_speed_percentage_arg(i: int):
         def validate_percentage(*args):
             percentage = args[i]
             if not -99 <= percentage <= 99:
-                raise ValueError("Grabber percentage must be in range 0 .. 100")
+                raise ValueError("Speed percentage must be in range -99 .. 99")
             return speed_function(*args)
 
         return validate_percentage
