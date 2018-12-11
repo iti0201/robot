@@ -101,6 +101,13 @@ get_second_line_sensor_from_right()
 get_third_line_sensor_from_right()
 ```
 
+Vastavalt eeltoodud järjekorrale saab ka küsida joonejärgimissensorite väärtusi grupiti järgmiste käskudega:
+```python
+get_left_line_sensors()
+get_right_line_sensors()
+get_line_sensors()
+```
+
 ## Roboti käpa juhtimine
 Käppa saab liigutada üles ja alla ning lahti ja kinni.
 Järgmine funktsioon liigutab käppa üles ja alla. Argumendiks sobib arv vahemikus 0 kuni 100, kus 0 on kõige madalam käpa kõrgus ja 100 on kõige kõrgem.
