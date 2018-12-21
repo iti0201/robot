@@ -123,7 +123,7 @@ close_grabber(percentage)
 ```
 
 ## Konstandid
-PiBoti instansilt saab küsida ka robotiga seotud konstante. Roboti ratta diameeter meetrites on kirjas klassimuutujas `WHEEL_DIAMETER` ja roboti telje pikkus meetrites on klassimuutujas `AXIS_LENGTH`.
+PiBoti klassis on defineeritud arvutuste jaoks vajalikud konstandid. Roboti ratta diameeter meetrites on kirjas klassimuutujas `WHEEL_DIAMETER` ja roboti telje pikkus meetrites on klassimuutujas `AXIS_LENGTH`.
 
 ## Kas oled simulatsioonis
 Robotilt saab küsida ka, kas kood jookseb simulatsioonis või mitte meetodiga `is_simulation()`.
