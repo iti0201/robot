@@ -67,6 +67,8 @@ class PiBot:
 			wiringpi.pinMode(gpio, 1)
 			wiringpi.digitalWrite(gpio, 0)
 
+		time.sleep(0.2)
+
 		wiringpi.digitalWrite(self._tofs[0].gpio, 1)
 
 		self._tof_master = VL53L1X()
@@ -109,7 +111,15 @@ class PiBot:
 				return True
 
 		return False
-			
+
+	def _sort_raw_adc(self):
+		"""
+		Sorts ADC values to correspond to the manual.
+		"""
+		sort_list = [5, 3, 4, 1, 0, 2, 6, 7, 11, 12, 13, 8, 9, 10, 14, 15]
+
+		self.sensor = [self.sensor[i] for i in sort_list]
+
 	def _adc_read(self, conf = 3):
 		i=0
 		self._pi_usart_flush()
@@ -129,6 +139,8 @@ class PiBot:
 						pass
 					i+=1
 				self._uart.timeout = Usart_timeout
+
+				self._sort_raw_adc()
 				return True
 			elif conf == 2 or conf == 1:
 				val = self._uart.read(40)
@@ -159,6 +171,8 @@ class PiBot:
 							pass
 						i+=1
 				self._uart.timeout = Usart_timeout
+
+				self._sort_raw_adc()
 				return True
 			else: 
 				val = self._uart.read(6)
@@ -264,7 +278,7 @@ class PiBot:
 				return True
 		return False
 
-	def imu_read_compass(self) -> bool:
+	def _imu_read_compass(self) -> bool:
 		"""
 		Updates the compass values of the bot. They will be stored under the
 		self.compass list.
@@ -283,7 +297,7 @@ class PiBot:
 
 		return True
 
-	def imu_read_accelerometer_gyro(self):
+	def _imu_read_gyro(self):
 		"""
 		Updates the accelerometer and gyro values of the bot. They will be stored
 		under the self.gyro list.

@@ -1,127 +1,134 @@
 Usarti seadistus:
 
 	baudrate -> saatmise sagedus
-	timeout  -> sõnumite ooteaeg sekundites
+	timeout  -> sï¿½numite ooteaeg sekundites
 
 
 muutujad:
 
-	battery -> muutuju kuhu (_battery_read) salvestab aku adc väärtuse
+	battery -> patarei pinge, loetav _adc_read funktsiooniga, kus conf & 1
 	
-	encoder -> jada kuhu (_encoders_get) salvestab enkoodrite väärtused
+	encoder -> jada kuhu (_encoders_get) salvestab enkoodrite vï¿½ï¿½rtused
 	
 		[0] - vasak enkooder
 		[1] - parem enkooder
 		
-	imu		-> muutuja kuhu (_imu_read) väärtused salvestab
+	gyro	-> muutuja kuhu (_imu_read_gyro) vÃ¤Ã¤rtused salvestab
 
-		[0] - x telje kiirendus
-		[1] - y telje kiirendus
-		[2] - z telje kiirendus
-		[3] - temperatuur
-		[4] - x teljel güroskoop
-		[5] - y teljel güroskoop
-		[6] - z teljel güroskoop
+		[0] - x telje hetkekiirendus
+		[1] - y telje hetkekiirendus
+		[2] - z telje hetkekiirendus
+		[4] - x teljel gÃ¼roskoop
+		[5] - y teljel gÃ¼roskoop
+		[6] - z teljel gÃ¼roskoop
+
+	compass -> Jada, kuhu (_imu_read_compass) salvestab kompassi vÃ¤Ã¤rtused.
+
+		[0] - nurk x-telje all
+		[1] - nurk y-telje all
+		[2] - nurk z-telje all
 		
-	sensor  -> kaugus ja joone andurite väärtuste jada
+	sensor  -> kaugus- ja jooneandurite vÃ¤Ã¤rtuste jada
 			
-		[00] - parem kõrvalevaatav kaugusandur			   * P
+		[00] - parem kÃµrvalevaatav kaugusandur			   * P
 		[01] - parem diagonaal kaugusandur				 *
 		[02] - parem ettevaatav kaugusandur				*
 				
 		[03] - vasak ettevaatav kaugusandur				*
 		[04] - vasak diagonaal kaugusandur				 *
-		[05] - vasak kõrvalevaatav kaugusandur			   * V
+		[05] - vasak kÃµrvalevaatav kaugusandur			   * V
 				
-		[06] - vasak Sharpi kaugusandur		
-		[07] - keskmine Sharpi kaugusandur		
+		[06] - Patarei otselugem (salvestatud ka battery muutujasse)
+		[07] - Kasutamata/tÃ¼hi.
 				
-		[08] - parem äärmine jooneandur					   * P
+		[08] - parem Ã¤Ã¤rmine jooneandur					   * P
 		[09] - paremalt teine jooneandur				*
 		[10] - parem keskmine jooneandur				*
 				
 		[11] - vasak keskmine jooneandur				*
 		[12] - vasakult teine jooneandur				*
-		[13] - vasak äärmine jooneandur					   * V
+		[13] - vasak Ã¤Ã¤rmine jooneandur					   * V
 				
-		[14] - parem Sharpi kaugusandur		
- 		[15] - tühi anduri pesa		
+		[14] - Kasutamata/tÃ¼hi
+ 		[15] - Kasutamata/tÃ¼hi
 				
+	tof_values -> Jada, kuhu (_tof_read) salvestab ToF andurite vÃ¤Ã¤rtused
+
+		[0] - vasak ToF andur
+		[1] - otse vaatav ToF andur
+		[2] - parem ToF andur
 		
 seadistus funktsioonid:
 
-	_adc_conf(conf=3) -> ADC andurite lugemise seadistuse funktsioon (algväärtus = 0)
+	_adc_conf(conf=3) -> ADC andurite lugemise seadistuse funktsioon (algvÃ¤Ã¤rtus = 0)
 		conf:							 (vaikimisi  = 3)
-			0 - andurid on välja lülitatud
-			1 - käivitatud andurid 0 kuni 7
-			2 - käivitatud andurid 8 kuni 15
-			3 - käivitatud andurid 0 kuni 15
+			0 - andurid on vÃ¤lja lÃ¤litatud
+			1 - kÃ¤ivitatud andurid 0 kuni 7
+			2 - kÃ¤ivitatud andurid 8 kuni 15
+			3 - kÃ¤ivitatud andurid 0 kuni 15
 		
-	_buzzer_set(buzzer) -> plaadil oleva kõlar suht signaali tugevus seadistus
+	_buzzer_set(buzzer) -> plaadil oleva kï¿½lar suht signaali tugevus seadistus
 		buzzer:
 		 	0   - vaikus
 			255 - maksimaalselt vali
 
-	_encoders_enable() -> enkoodrite käivitus ja väärtuste nullimine
+	_encoders_enable() -> enkoodrite kÃ¤ivitus ja vÃ¤Ã¤rtuste nullimine
 
-	_imu_enable() -> käivitan ja algseadistab IMU mooduli
+	_motors_enable() -> lÃ¼litab mootoritele voolus sisse ja vÃµimaldab nende juhtimise
 
-	_motors_enable() -> lülitab mootoritele voolus sisse ja võimaldab nende juhtimise
-
-	_motorR_set(val= 0) -> seadistab parempoolse mootori kiirus väärtuse val-iks
+	_motorR_set(val= 0) -> seadistab parempoolse mootori kiirus vÃ¤Ã¤rtuse val-iks
 		val: 
 			-99 - maksimaalne kiirus tagurpidi
 			0   - pidurdamine
 			 99 - maksimaalne kiirus edasi
 
-	_motorL_set(val= 0) -> seadistab vasakpoolse mootori kiirus väärtuse val-iks
+	_motorL_set(val= 0) -> seadistab vasakpoolse mootori kiirus vÃ¤Ã¤rtuse val-iks
 		val: 
 			-99 - maksimaalne kiirus tagurpidi
 			0   - pidurdamine
 			 99 - maksimaalne kiirus edasi
 
-	_motorB_set(val= 0) -> seadistab mõlema mootori kiirus väärtuse val-iks
+	_motorB_set(val= 0) -> seadistab mÃµlema mootori kiirus vÃ¤Ã¤rtuse val-iks
 		val: 
 			-99 - maksimaalne kiirus tagurpidi
 			0   - pidurdamine
 			 99 - maksimaalne kiirus edasi
 
-	_servo_enable() -> võimaldab servo juhtimise
+	_servo_enable() -> vÃµimaldab servo juhtimise
 
-	_servo_one_set(val) seadistab esimese servomootori väärtuse val-iks
+	_servo_one_set(val) seadistab esimese servomootori vÃ¤Ã¤rtuse val-iks
 		val:
-			väärtused 0 kuni 255
-			eeldus on sobivad väärtused 25 kuni 36
-			haaratsi väärtused
-				25 - haarats täiesti koos 
-				36 - haarats täiesti lahti
+			vÃ¤Ã¤rtused 0 kuni 255
+			eeldus on sobivad vÃ¤Ã¤rtused 25 kuni 36
+			haaratsi vÃ¤Ã¤rtused
+				25 - haarats tÃ¤iesti koos 
+				36 - haarats tÃ¤iesti lahti
 			
-	_servo_two_set(val) seadistab teise servomootori väärtuse val-iks
+	_servo_two_set(val) seadistab teise servomootori vÃ¤Ã¤rtuse val-iks
 		val:
-			väärtused 0 kuni 255
-			eeldus on sobivad väärtused 30 kuni 42
+			vÃ¤Ã¤rtused 0 kuni 255
+			eeldus on sobivad vÃ¤Ã¤rtused 30 kuni 42
 			haaratsi nurk:
-				30 - võimalikult üleval
-				42 - täiesti all
+				30 - vÃµimalikult Ã¼leval
+				42 - tÃ¤iesti all
 				
 lugemise funktsioonid:
 
-	_adc_read(conf) -> kirjtab vastavad andurite väärtused jadasse sensor
+	_adc_read(conf) -> kirjtab vastavad andurite vÃ¤Ã¤rtused jadasse sensor
 			conf:							 (vaikimisi  = 3)
-			1 - loeb andurid 0 kuni 7
+			1 - loeb andurid 0 kuni 7 (sh. ka akupinge!)
 			2 - loeb andurid 8 kuni 15
 			3 - loeb andurid 0 kuni 15
 
-	_battery_read() -> salvestab ADC aku väärtuse muutujasse battery
+	_encoders_get()	-> salvestab enkoodrite vÃ¤Ã¤rtused jadasse encoder 
 
-	
-	_encoders_get()	-> salvestab enkoodrite väärtused jadasse encoder 
+	_imu_read_gyro() -> salvestab kiirendusanduri ja gÃ¼roskoopi mooduli vÃ¤Ã¤rtused muutujasse gyro
 
-	_imu_read() -> salvestab IMU mooduli väärtused muutujasse imu
+	_imu_read_compass() -> salvestab magnetomeetri (kompassi) nurkvÃ¤Ã¤rtused muutujase compass.
 	
 Kasutamine:
 
-	näide:
+	nï¿½ide:
 		from commRaspMain import PiBot
 	
 		mybot = PiBot()
@@ -136,5 +143,5 @@ Kasutamine:
 		
 		mybot on handler PiBot-ile
 		
-		kõik funktsioonid  ja muutujad on klassi PiBot kuuluvad funktsioonid
-		ehk tuleb kutsuda läbi PiBot handleri ehk antud juhul mybot 
+		kï¿½ik funktsioonid  ja muutujad on klassi PiBot kuuluvad funktsioonid
+		ehk tuleb kutsuda lï¿½bi PiBot handleri ehk antud juhul mybot 
