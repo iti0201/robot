@@ -89,7 +89,7 @@ class PiBot:
 		if not self._tof_master:
 			return False
 
-		for idx, holder in self._tofs:
+		for idx, holder in enumerate(self._tofs):
 			self.tof_values[idx] = self._tof_master.get_distance(holder.id)
 
 		return True
