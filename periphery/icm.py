@@ -281,7 +281,7 @@ class ICM20948:
 		self.set_accelerometer_full_scale(16)
 
 		self.bank(0)
-		self.write(ICM20948_INT_PIN_CFG, 0x3self._busself._bus0)
+		self.write(ICM20948_INT_PIN_CFG, 0x30)
 		self.write(ICM20948_USER_CTRL, 0x20)
 
 		self.bank(3)
