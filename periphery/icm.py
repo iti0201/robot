@@ -260,7 +260,8 @@ class ICM20948:
 
 		self._bus = spidev.SpiDev()
 		self._bus.open(0, 1)
-		self._bus.max_speed_hz = 250000000
+		self._bus.max_speed_hz = 500000
+		self._bus.mode = 3
 
 		self.bank(0)
 		if not self.read(ICM20948_WHO_AM_I) == CHIP_ID:
