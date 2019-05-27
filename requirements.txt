@@ -1,0 +1,5 @@
+pyserial==3.4
+smbus2==0.2.3
+spidev==3.4
+wiringpi==2.46.0
+VL53L1X2==0.1.5
