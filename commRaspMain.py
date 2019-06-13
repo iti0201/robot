@@ -283,15 +283,10 @@ class PiBot:
 		Updates the compass values of the bot. They will be stored under the
 		self.compass list.
 
-		The compass has a refresh rate of roughly 30 Hz. Attempting to read it
-		faster than that will result in the function returning False.
+		The compass has a refresh rate of roughly 30 Hz.
 
 		Returns True upon a successful read.
-		Returns False when the magnetometer (compass) is not ready.
 		"""
-		if not self._imu.magnetometer_ready():
-			return False
-
 		x, y, z = self._imu.read_magnetometer_data()
 		self.compass = [x, y, z]
 
