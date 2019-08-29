@@ -138,6 +138,7 @@ class PiBot(PiBotBase):
     def initialize_robot(self):
         self._motors_enable()
         self._encoders_enable()
+        self._tof_init()
         self._servo_enable()
         self.set_grabber_height(50)
         self.close_grabber(50)
