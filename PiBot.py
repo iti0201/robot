@@ -360,7 +360,7 @@ class PiBot(PiBotBase):
         :param height: 0 .. 100
         """
         y = self.grabber_height_converter.get(height_percentage)
-        if self.grabber_close_converter.right_order:
+        if self.grabber_height_converter.right_order:
             self._servo_two_set(y)
         else:
             self._servo_one_set(y)
