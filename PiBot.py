@@ -152,7 +152,7 @@ class PiBot(PiBotBase):
 
     @staticmethod
     def _values_correct(array, start, end) -> bool:
-        for value in enumerate(array[start:end]):
+        for value in array[start:end]:
             if value is None:
                 return False
         return True
