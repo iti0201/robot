@@ -29,7 +29,7 @@ class SensorConverter(AbstractBaseClass):
         converters = []
 
         with open(file_path, 'r', encoding="utf-8-sig") as file:
-            converters.append(EncoderConverter(int(file.readline().strip())))
+            converters.append(EncoderConverter(float(file.readline().strip())))
             try:
                 line = file.readline()
                 order, open_, down, closed, up = map(int, line.split())
