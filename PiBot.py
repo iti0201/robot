@@ -210,21 +210,6 @@ class PiBot(PiBotBase):
             self._imu_read_compass()
             self.imu_last_update = timestamp
 
-    def _get_value_or_none_from_converter(self, converter, sensor_value, sensor_block_nr):
-        try:
-            value = converter.get(sensor_value)
-        except OverflowError:
-            value = None
-            self._adc_read(sensor_block_nr)
-        return value
-
-    def _get_value_from_converter(self, converter, sensor_index, sensor_block_nr):
-        value = None
-        self._update_sensor_block(sensor_block_nr)
-        while value is None:
-            value = self._get_value_or_none_from_converter(converter, self.sensor[sensor_index], sensor_block_nr)
-        return value
-
     def _get_value(self, sensor_index, sensor_block_nr):
         self._update_sensor_block(sensor_block_nr)
         return self.sensor[sensor_index]
