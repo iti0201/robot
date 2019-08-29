@@ -116,15 +116,6 @@ class PiBot(PiBotBase):
 
         # Converters
         self.converters = SensorConverter.make_converters("converters{}.txt".format(robot_nr))
-        self.front_left_ir_converter, \
-        self.front_middle_ir_converter, \
-        self.front_right_ir_converter, \
-        self.rear_left_straight_ir_converter, \
-        self.rear_left_diagonal_ir_converter, \
-        self.rear_left_side_ir_converter, \
-        self.rear_right_straight_ir_converter, \
-        self.rear_right_diagonal_ir_converter, \
-        self.rear_right_side_ir_converter, \
         self.encoder_converter, \
         self.grabber_height_converter, \
         self.grabber_close_converter = self.converters
