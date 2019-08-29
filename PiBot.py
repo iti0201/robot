@@ -305,21 +305,21 @@ class PiBot(PiBotBase):
         """
         :param percentage: -99 .. 99
         """
-        self._motorR_set(-percentage)
+        self._motorR_set(percentage)
 
     @Validator.validate_speed_percentage
     def set_right_wheel_speed(self, percentage: int):
         """
         :param percentage: -99 .. 99
         """
-        self._motorL_set(-percentage)
+        self._motorL_set(percentage)
 
     @Validator.validate_speed_percentage
     def set_wheels_speed(self, percentage: int):
         """
         :param percentage: -99 .. 99
         """
-        self._motorB_set(-percentage)
+        self._motorB_set(percentage)
 
     def _update_encoders(self):
         while not self._encoders_get() or any(map(lambda encoder: encoder is None, self.encoder)):
