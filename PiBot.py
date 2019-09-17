@@ -147,6 +147,9 @@ class PiBot(PiBotBase):
     def is_simulation(self):
         return False
 
+    def sleep(self, time_in_seconds):
+        time.sleep(time_in_seconds)
+
     def set_update_time(self, update_time):
         self.UPDATE_TIME = update_time
 
