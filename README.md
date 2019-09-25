@@ -13,7 +13,7 @@ Kõik funktsioonid tuleb välja kutsuda selle objekti kaudu.
 
 ## Roboti juhtimise funktsioonid
 
-Järgmised 3 funktsiooni panevad vastavalt kas vasaku või parema või mõlema ratta kiiruseks argumendina kaasa antud protsendi maksimaalsest kiirusest. Protsendid, mis sobivad, on vahemikus -99 kuni 99. Kui tahetakse tagurpidi liikuda, peab protsent olema negatiivne. Robot hakkab liikuma alates kiiruse protsendist 15 (ligikaudne).
+Järgmised 3 funktsiooni panevad vastavalt kas vasaku või parema või mõlema ratta kiiruseks argumendina kaasa antud protsendi maksimaalsest kiirusest. Protsendid, mis sobivad, on vahemikus -99 kuni 99. Kui tahetakse tagurpidi liikuda, peab protsent olema negatiivne. Robot hakkab liikuma alates kiiruse protsendist 8 (ligikaudne).
 
 ```python
 set_left_wheel_speed(percentage)
