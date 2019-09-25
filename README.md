@@ -34,12 +34,11 @@ get_left_wheel_encoder()
 
 ```python
 from PiBot import PiBot
-import rospy
 
 robot = PiBot()
 
 robot.set_wheels_speed(30)
-rospy.sleep(2)
+robot.sleep(2)
 robot.set_wheels_speed(0)
 ```
 
@@ -125,6 +124,23 @@ close_grabber(percentage)
 ## Konstandid
 PiBoti klassis on defineeritud arvutuste jaoks vajalikud konstandid. Roboti ratta diameeter meetrites on kirjas klassimuutujas `WHEEL_DIAMETER` ja roboti telje pikkus meetrites on klassimuutujas `AXIS_LENGTH`.
 
+## Ootele jäämine - sleep(duration)
+
+Programmi tööd saab "pausile" panna, kasutades `sleep(duration)` käsku. Argument on aeg sekundites.
+
+### Näide
+
+```
+from PiBot import PiBot
+
+# Create a robot instance
+robot = PiBot()
+
+print("Good news...")
+robot.sleep(2)
+print("everyone!")
+```
+
 ## Kas oled simulatsioonis
 Robotilt saab küsida ka, kas kood jookseb simulatsioonis või mitte meetodiga `is_simulation()`.
 
@@ -147,7 +163,6 @@ else:
 ## Näide
 ```python
 from PiBot import PiBot
-import rospy
 
 # Create a robot instance
 robot = PiBot()
@@ -159,42 +174,30 @@ distance_from_object = robot.get_front_middle_ir()
 robot.set_wheels_speed(30)
 while distance_from_object > 0.2:
     distance_from_object = robot.get_front_middle_ir()
-    rospy.sleep(0.05)
+    robot.sleep(0.05)
     
 # Stop the robot when done
 robot.set_wheels_speed(0)
 ```
 
-# rospy
+## Ajatempli lugemine - get_time()
 
-## sleep(duration)
-
-Programmi tööd saab "pausile" panna, kasutades `sleep(duration)` käsku. Argument on aeg sekundites.
+Ajaga tegevuste (nt taimeri) jaoks on võimalik kasutada `time.time()` funktsiooni. Funktsioon tagastab mitu sekundit on möödunud 1970. aasta 1. jaanuari keskööst.
 
 ### Näide
 
 ```
-import rospy
+import time
+from PiBot import PiBot
 
-print("Good news...")
-rospy.sleep(2)
-print("everyone!")
-```
+# Create a robot instance
+robot = PiBot()
 
-## get_time()
-
-Ajaga tegevuste (nt taimeri) jaoks on võimalik kasutada `get_time()` funktsiooni. Funktsioon tagastab mitu sekundit on möödunud 1970. aasta 1. jaanuari keskööst.
-
-### Näide
-
-```
-import rospy
-
-start_time = rospy.get_time()
+start_time = time.time()
 print("Time at start is {}".format(start_time))
-while start_time + 5.0 > rospy.get_time():
+while start_time + 5.0 > time.time():
     print("Well, I'm doing something...")
-    rospy.sleep(1)
+    robot.sleep(1)
 print("I did something for 5 seconds!")
-print("Time at end is {}".format(rospy.get_time()))
+print("Time at end is {}".format(time.time()))
 ```
