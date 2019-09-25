@@ -21,15 +21,6 @@ set_right_wheel_speed(percentage)
 set_wheels_speed(percentage)
 ```
 
-## Koodrid
-
-Järgmised kaks funktsiooni tagastavad vastavalt kas parema või vasaku ratta koodri väärtuse ehk mitu kraadi on ratas pöörelnud programmi algusest peale. Kooder tagastab väärtuse täisarvuna. Kui sõita edaspidi, suureneb väärtus, kui sõita tagurpidi, väheneb väärtus.
-
-```python
-get_right_wheel_encoder()
-get_left_wheel_encoder()
-```
-
 **Näide.** Teeme roboti objekti ja paneme ta paariks sekundiks otse sõitma
 
 ```python
@@ -40,6 +31,15 @@ robot = PiBot()
 robot.set_wheels_speed(30)
 robot.sleep(2)
 robot.set_wheels_speed(0)
+```
+
+## Koodrid
+
+Järgmised kaks funktsiooni tagastavad vastavalt kas parema või vasaku ratta koodri väärtuse ehk mitu kraadi on ratas pöörelnud programmi algusest peale. Kooder tagastab väärtuse täisarvuna. Kui sõita edaspidi, suureneb väärtus, kui sõita tagurpidi, väheneb väärtus.
+
+```python
+get_right_wheel_encoder()
+get_left_wheel_encoder()
 ```
 
 ## Roboti sensorite uuendamine
