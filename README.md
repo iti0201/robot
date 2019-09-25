@@ -160,26 +160,6 @@ else:
     speed = 20
 ```
 
-## Näide
-```python
-from PiBot import PiBot
-
-# Create a robot instance
-robot = PiBot()
-
-# Get distance from object using the front middle IR sensor
-distance_from_object = robot.get_front_middle_ir()
-
-# Drive towards object
-robot.set_wheels_speed(30)
-while distance_from_object > 0.2:
-    distance_from_object = robot.get_front_middle_ir()
-    robot.sleep(0.05)
-    
-# Stop the robot when done
-robot.set_wheels_speed(0)
-```
-
 ## Ajatempli lugemine - get_time()
 
 Ajaga tegevuste (nt taimeri) jaoks on võimalik kasutada `time.time()` funktsiooni. Funktsioon tagastab mitu sekundit on möödunud 1970. aasta 1. jaanuari keskööst.
@@ -200,4 +180,24 @@ while start_time + 5.0 > time.time():
     robot.sleep(1)
 print("I did something for 5 seconds!")
 print("Time at end is {}".format(time.time()))
+```
+
+# Roboti programmi näide
+```python
+from PiBot import PiBot
+
+# Create a robot instance
+robot = PiBot()
+
+# Get distance from object using the front middle IR sensor
+distance_from_object = robot.get_front_middle_ir()
+
+# Drive towards object
+robot.set_wheels_speed(30)
+while distance_from_object > 0.2:
+    distance_from_object = robot.get_front_middle_ir()
+    robot.sleep(0.05)
+    
+# Stop the robot when done
+robot.set_wheels_speed(0)
 ```
