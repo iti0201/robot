@@ -261,22 +261,22 @@ class PiBot(PiBotBase):
         return self.get_front_irs() + self.get_rear_irs()
 
     def get_leftmost_line_sensor(self) -> int:
-        return self._get_value(8, 2)
-
-    def get_second_line_sensor_from_left(self) -> int:
-        return self._get_value(9, 2)
-
-    def get_third_line_sensor_from_left(self) -> int:
-        return self._get_value(10, 2)
-
-    def get_rightmost_line_sensor(self) -> int:
         return self._get_value(13, 2)
 
-    def get_second_line_sensor_from_right(self) -> int:
+    def get_second_line_sensor_from_left(self) -> int:
         return self._get_value(12, 2)
 
-    def get_third_line_sensor_from_right(self) -> int:
+    def get_third_line_sensor_from_left(self) -> int:
         return self._get_value(11, 2)
+
+    def get_rightmost_line_sensor(self) -> int:
+        return self._get_value(8, 2)
+
+    def get_second_line_sensor_from_right(self) -> int:
+        return self._get_value(9, 2)
+
+    def get_third_line_sensor_from_right(self) -> int:
+        return self._get_value(10, 2)
 
     def get_left_line_sensors(self):
         return [self.get_leftmost_line_sensor(), self.get_second_line_sensor_from_left(),
