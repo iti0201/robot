@@ -82,8 +82,7 @@ get_irs()
 ```
 
 ## Roboti joonejärgimise sensorid
-Roboti joonejärgimissensorid asuvad roboti all tagapool. Need tagastavad väärtusi vahemikus 0 kuni 1024, kus 1024 on kõige intensiivsem ehk valgem värv ja 0 kõige vähem intensiivsem ehk kõige mustem värv. Praktikas tagastavad sensorid musta värvi korral umbes 100 ja valge värvi korral umbes 900.
-Funktsioonide pooled on määratud nii, et vaadatakse ettepoole, kuigi sensorid asuvad tagapool.
+Roboti joonejärgimissensorid asuvad roboti all tagapool. Need tagastavad väärtusi vahemikus 0 kuni 1024, kus 0 on kõige intensiivsem ehk valgem värv ja 1024 kõige vähem intensiivsem ehk kõige mustem värv. Praktikas tagastavad sensorid musta värvi korral umbes 900 ja valge värvi korral umbes 100.
 Järgmised 3 funktsiooni tagastavad vastavalt kõige vasakpoolsema, vasakult teise ja vasakult kolmanda ehk vasakpoolse keskmise sensori väärtused.
 
 ```python
