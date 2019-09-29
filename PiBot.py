@@ -5,10 +5,6 @@ import time
 import os
 
 
-# TODO:
-# Käpitsate kalibreerimine
-# IMU
-
 class SensorConverter(AbstractBaseClass):
     @abstractmethod
     def get(self, x: int) -> float:
@@ -37,6 +33,7 @@ class SensorConverter(AbstractBaseClass):
                 order, open_, down, closed, up = 1, 33, 39, 23, 29
             converters.append(GrabberHeightConverter(order, up, down))
             converters.append(GrabberCloseConverter(order, closed, open_))
+        converters.append(LineSensorConverter(1024))
 
         return converters
 
@@ -71,6 +68,14 @@ class EncoderConverter(SensorConverter):
 
     def get(self, x: int):
         return -self.degree_per_tick * int(x)
+
+
+class LineSensorConverter(SensorConverter):
+    def __init__(self, highest_intensity):
+        self.highest_intensity = highest_intensity
+
+    def get(self, x: int):
+        return self.highest_intensity - x
 
 
 class Validator:
@@ -118,7 +123,8 @@ class PiBot(PiBotBase):
         self.converters = SensorConverter.make_converters("converters{}.txt".format(robot_nr))
         self.encoder_converter, \
         self.grabber_height_converter, \
-        self.grabber_close_converter = self.converters
+        self.grabber_close_converter, \
+        self.line_sensor_converter = self.converters
 
         # Initialize robot
         self.initialize_robot()
@@ -261,22 +267,22 @@ class PiBot(PiBotBase):
         return self.get_front_irs() + self.get_rear_irs()
 
     def get_leftmost_line_sensor(self) -> int:
-        return self._get_value(13, 2)
+        return self.line_sensor_converter.get(self._get_value(13, 2))
 
     def get_second_line_sensor_from_left(self) -> int:
-        return self._get_value(12, 2)
+        return self.line_sensor_converter.get(self._get_value(12, 2))
 
     def get_third_line_sensor_from_left(self) -> int:
-        return self._get_value(11, 2)
+        return self.line_sensor_converter.get(self._get_value(11, 2))
 
     def get_rightmost_line_sensor(self) -> int:
-        return self._get_value(8, 2)
+        return self.line_sensor_converter.get(self._get_value(8, 2))
 
     def get_second_line_sensor_from_right(self) -> int:
-        return self._get_value(9, 2)
+        return self.line_sensor_converter.get(self._get_value(9, 2))
 
     def get_third_line_sensor_from_right(self) -> int:
-        return self._get_value(10, 2)
+        return self.line_sensor_converter.get(self._get_value(10, 2))
 
     def get_left_line_sensors(self):
         return [self.get_leftmost_line_sensor(), self.get_second_line_sensor_from_left(),
@@ -355,4 +361,3 @@ class PiBot(PiBotBase):
             self._servo_one_set(y)
         else:
             self._servo_two_set(y)
-
