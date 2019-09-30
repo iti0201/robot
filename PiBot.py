@@ -223,48 +223,48 @@ class PiBot(PiBotBase):
         self._update_sensor_block(sensor_block_nr)
         return self.sensor[sensor_index]
 
-    def _get_front_ir_value(self, index: int):
+    def _get_front_laser_value(self, index: int):
         self._update_tof_sensors()
         return self.tof_values[index]
 
-    def get_front_left_ir(self) -> float:
-        return self._get_front_ir_value(0)
+    def get_front_left_laser(self) -> float:
+        return self._get_front_laser_value(0)
 
-    def get_front_middle_ir(self) -> float:
-        return self._get_front_ir_value(1)
+    def get_front_middle_laser(self) -> float:
+        return self._get_front_laser_value(1)
 
-    def get_front_right_ir(self) -> float:
-        return self._get_front_ir_value(2)
+    def get_front_right_laser(self) -> float:
+        return self._get_front_laser_value(2)
 
-    def get_front_irs(self) -> [float]:
-        return [self.get_front_left_ir(), self.get_front_middle_ir(), self.get_front_right_ir()]
+    def get_front_lasers(self) -> [float]:
+        return [self.get_front_left_laser(), self.get_front_middle_laser(), self.get_front_right_laser()]
 
-    def get_rear_left_straight_ir(self) -> float:
+    def get_rear_left_straight_laser(self) -> float:
         return self._get_value(2, 1)
 
-    def get_rear_left_diagonal_ir(self) -> float:
+    def get_rear_left_diagonal_laser(self) -> float:
         return self._get_value(1, 1)
 
-    def get_rear_left_side_ir(self) -> float:
+    def get_rear_left_side_laser(self) -> float:
         return self._get_value(0, 1)
 
-    def get_rear_right_straight_ir(self) -> float:
+    def get_rear_right_straight_laser(self) -> float:
         return self._get_value(3, 1)
 
-    def get_rear_right_diagonal_ir(self) -> float:
+    def get_rear_right_diagonal_laser(self) -> float:
         return self._get_value(4, 1)
 
-    def get_rear_right_side_ir(self) -> float:
+    def get_rear_right_side_laser(self) -> float:
         return self._get_value(5, 1)
 
-    def get_rear_irs(self) -> [float]:
+    def get_rear_lasers(self) -> [float]:
         return [
-            self.get_rear_left_side_ir(), self.get_rear_left_diagonal_ir(), self.get_rear_left_straight_ir(),
-            self.get_rear_right_straight_ir(), self.get_rear_right_diagonal_ir(), self.get_rear_right_side_ir()
+            self.get_rear_left_side_laser(), self.get_rear_left_diagonal_laser(), self.get_rear_left_straight_laser(),
+            self.get_rear_right_straight_laser(), self.get_rear_right_diagonal_laser(), self.get_rear_right_side_laser()
         ]
 
-    def get_irs(self) -> [float]:
-        return self.get_front_irs() + self.get_rear_irs()
+    def get_lasers(self) -> [float]:
+        return self.get_front_lasers() + self.get_rear_lasers()
 
     def get_leftmost_line_sensor(self) -> int:
         return self.line_sensor_converter.get(self._get_value(13, 2))
