@@ -45,15 +45,15 @@ get_left_wheel_encoder()
 ## Roboti sensorite uuendamine
 Roboti sensoreid uuendatakse automaatselt iga 5 millisekundi tagant. Uuendamise ajale saab ligi läbi klassimuutuja `UPDATE_TIME`.
 
-## Roboti eespoolsed infrapunasensorid
-Roboti eespoolsed (see pool, kus on käpp) infrapunasensorid mõõdavad kaugust vahemikus 16 – 100 cm. Järgmised 3 funktsiooni tagastavad vastavalt vasaku, keskmise ja parema infrapunasensori väärtuse meetrites. Viimane funktsioon tagastab järjendi kõigist eespoolsetest infrapunasensorite väärtustest samas järjekorras nagu enne loetleti.
+## Roboti eespoolsed lasersensorid
+Roboti eespoolsed (see pool, kus on käpp) lasersensorid mõõdavad kaugust vahemikus 10 – 200 cm. Järgmised 3 funktsiooni tagastavad vastavalt vasaku, keskmise ja parema lasersensori väärtuse meetrites. Viimane funktsioon tagastab järjendi kõigist eespoolsetest infrapunasensorite väärtustest samas järjekorras nagu enne loetleti.
 
 ```python
-get_front_left_ir()
-get_front_middle_ir()
-get_front_right_ir()
+get_front_left_laser()
+get_front_middle_laser()
+get_front_right_laser()
 
-get_front_irs()
+get_front_lasers()
 ```
 
 ## Roboti tagumised infrapunasensorid
@@ -74,11 +74,11 @@ get_rear_right_diagonal_ir()
 get_rear_right_side_ir()
 ```
 
-Järgmistest funktsioonidest esimene tagastab kõikide tagumiste infrapunasensorite väärtused järjendis juba loetletud järjekorras. Teine funktsioon tagastab kõikide infrapunasensorite väärtused järjendis eespoolt alustades loetletud järjekorras.
+Järgmistest funktsioonidest esimene tagastab kõikide tagumiste infrapunasensorite väärtused järjendis juba loetletud järjekorras. Teine funktsioon tagastab kõikide kaugussensorite väärtused järjendis eespoolt alustades loetletud järjekorras.
 
 ```python
 get_rear_irs()
-get_irs()
+get_distance_sensors()
 ```
 
 ## Roboti joonejärgimise sensorid
