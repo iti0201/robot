@@ -34,6 +34,7 @@ class SensorConverter(AbstractBaseClass):
             converters.append(GrabberHeightConverter(order, up, down))
             converters.append(GrabberCloseConverter(order, closed, open_))
         converters.append(LineSensorConverter(1024))
+        converters.append(LaserSensorConverter(1000))
 
         return converters
 
@@ -76,6 +77,14 @@ class LineSensorConverter(SensorConverter):
 
     def get(self, x: int):
         return self.highest_intensity - x
+
+
+class LaserSensorConverter(SensorConverter):
+    def __init__(self, divisor):
+        self.divisor = divisor
+
+    def get(self, x: int):
+        return x / self.divisor
 
 
 class Validator:
@@ -124,7 +133,8 @@ class PiBot(PiBotBase):
         self.encoder_converter, \
         self.grabber_height_converter, \
         self.grabber_close_converter, \
-        self.line_sensor_converter = self.converters
+        self.line_sensor_converter, \
+        self.laser_sensor_converter = self.converters
 
         # Initialize robot
         self.initialize_robot()
@@ -228,13 +238,13 @@ class PiBot(PiBotBase):
         return self.tof_values[index]
 
     def get_front_left_laser(self) -> float:
-        return self._get_front_laser_value(0)
+        return self.laser_sensor_converter.get(self._get_front_laser_value(0))
 
     def get_front_middle_laser(self) -> float:
-        return self._get_front_laser_value(1)
+        return self.laser_sensor_converter.get(self._get_front_laser_value(1))
 
     def get_front_right_laser(self) -> float:
-        return self._get_front_laser_value(2)
+        return self.laser_sensor_converter.get(self._get_front_laser_value(2))
 
     def get_front_lasers(self) -> [float]:
         return [self.get_front_left_laser(), self.get_front_middle_laser(), self.get_front_right_laser()]
