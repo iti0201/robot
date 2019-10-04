@@ -289,7 +289,9 @@ class ICM20948:
 		self.write(ICM20948_I2C_MST_DELAY_CTRL, 0x01)
 
 		if not self.mag_read(AK09916_WIA) == AK09916_CHIP_ID:
-			raise RuntimeError("Unable to find AK09916")
+                        time.sleep(1)
+                        return self.__init__(cs, init_wiring_pi)
+			#raise RuntimeError("Unable to find AK09916")
 
 		# Reset the magnetometer
 		self.mag_write(AK09916_CNTL3, 0x01)
