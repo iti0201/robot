@@ -1,5 +1,5 @@
-from commRaspMain import PiBot
+from PiBot import PiBot
 
-robot = PiBot()
-
-robot._motorB_set(0)
+if __name__ == "__main__":
+    robot = PiBot()
+    robot.set_wheels_speed(0)
