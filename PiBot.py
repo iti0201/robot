@@ -76,7 +76,7 @@ class LineSensorConverter(SensorConverter):
         self.highest_intensity = highest_intensity
 
     def get(self, x: int):
-        return self.highest_intensity - x
+        return x
 
 
 class LaserSensorConverter(SensorConverter):
