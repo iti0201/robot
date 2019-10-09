@@ -1,5 +1,7 @@
 import serial
 import time
+import threading
+
 from VL53L1X2 import VL53L1X
 from periphery import icm
 import wiringpi
@@ -41,12 +43,66 @@ class PiBot:
 
 		self._imu = icm.ICM20948()
 
+		self._rotation_z = 0.0
+		self._gyro_thread = None
+		self._gyro_running = False
+		self._gyro_lock = threading.Lock()
+
 	def __del__(self):
 		if self._tof_master:
 			for holder in self._tofs:
 				self._tof_master.stop_ranging(holder.id)
 
 			self._tof_master.close()
+
+	def _gyro_stop(self):
+		"""
+		Stops the gyro summarizer thread if it is running.
+		"""
+
+		if self._gyro_running:
+			self._gyro_running = False
+			self._gyro_thread.join()
+
+	def _gyro_start(self):
+		"""
+		Starts the gyro summarizer thread.
+		"""
+
+		if not self._gyro_running:
+			self._rotation_z = 0.0
+			self._gyro_running = True
+			self._gyro_thread = threading.Thread(target=self._gyro_worker)
+
+	def _gyro_worker(self):
+		"""
+		Gyro summarizer. Polls the gyro regularly (usually every 5 ms or so)
+		and summarizers the change in rotation into the self._rotation_z variable.
+
+		Because of the GIL, the variables in question should be atomic enough
+		to use.
+		"""
+		current_time_millis = lambda: int(round(time.time() * 1000))
+		last_poll = current_time_millis()
+
+		while self._gyro_running:
+			time.sleep(0.001)
+
+			self._imu_read_gyro()
+
+			time_now = current_time_millis()
+			delta = time_now - last_poll
+
+			if delta < 1:
+				continue
+
+			last_poll = time_now
+			delta = self._gyro[5] * delta * 1000
+
+			if -0.1 < delta < 0.1:
+				continue
+
+			self._rotation_z += delta
 
 	def _tof_init(self) -> bool:
 		"""
@@ -101,7 +157,7 @@ class PiBot:
 		while self._uart.read(1):
 			pass
 		self._uart.timeout = Usart_timeout
-		
+
 	def _adc_conf(self, conf = 3):
 		self._pi_usart_flush()
 		self._uart.write(b'x:%04d' % conf)
@@ -150,12 +206,12 @@ class PiBot:
 					for x in val:
 						if x == '':
 							break
-	
+
 						try:
 							self.sensor[i] = int(x)
 						except:
 							pass
-	
+
 						i+=1
 				elif conf == 2:
 					i=8
@@ -164,7 +220,7 @@ class PiBot:
 					for x in val:
 						if x == '':
 							break
-	
+
 						try:
 							self.sensor[i] = int(x)
 						except:
@@ -174,13 +230,13 @@ class PiBot:
 
 				self._sort_raw_adc()
 				return True
-			else: 
+			else:
 				val = self._uart.read(6)
 				print('read nothing')
-				
+
 		self._uart.timeout = Usart_timeout
 		return False
-	
+
 	def _buzzer_set(self, buzzer):
 		self._pi_usart_flush()
 		self._uart.write(b'g:%04d' % buzzer)
@@ -189,7 +245,7 @@ class PiBot:
 			if val == (b'buzzer'):
 				return True
 		return False
-		
+
 	def _encoders_enable(self):
 		self._pi_usart_flush()
 		self._uart.write(b't:0000')
@@ -199,7 +255,7 @@ class PiBot:
 				return True
 
 		return False
-		
+
 	def _encoders_get(self):
 		self._pi_usart_flush()
 		self._uart.write(b'h:0000')
@@ -214,7 +270,7 @@ class PiBot:
 					return False
 				return True
 		return False
-		
+
 	def _motors_enable(self):
 		self._pi_usart_flush()
 		self._uart.write(b'm:0000')
@@ -223,7 +279,7 @@ class PiBot:
 			if val == (b'motorE'):
 				return True
 		return False
-		
+
 	def _motorR_set(self, val= 0):
 		self._pi_usart_flush()
 		self._uart.write(b'c:%04d' % val)
@@ -232,7 +288,7 @@ class PiBot:
 			if val == (b'motorR'):
 				return True
 		return False
-			
+
 	def _motorL_set(self, val = 0):
 		self._pi_usart_flush()
 		self._uart.write(b'd:%04d' % val)
@@ -241,7 +297,7 @@ class PiBot:
 			if val == (b'motorL'):
 				return True
 		return False
-		
+
 	def _motorB_set(self, val = 0):
 		self._pi_usart_flush()
 		self._uart.write(b'l:%04d' % val)
@@ -250,7 +306,7 @@ class PiBot:
 			if val == (b'motorB'):
 				return True
 		return False
-		
+
 	def _servo_enable(self):
 		self._pi_usart_flush()
 		self._uart.write(b's:0000')
@@ -259,7 +315,7 @@ class PiBot:
 			if val == (b'servoE'):
 				return True
 		return False
-		
+
 	def _servo_one_set(self, val = 20):
 		self._pi_usart_flush()
 		self._uart.write(b'e:%04d' % val)
@@ -268,7 +324,7 @@ class PiBot:
 			if val == (b'servo1'):
 				return True
 		return False
-			
+
 	def _servo_two_set(self, val = 20):
 		self._pi_usart_flush()
 		self._uart.write(b'f:%04d' % val)
@@ -287,8 +343,13 @@ class PiBot:
 
 		Returns True upon a successful read.
 		"""
+
+		self._gyro_lock.acquire()
+
 		x, y, z = self._imu.read_magnetometer_data()
 		self.compass = [x, y, z]
+
+		self._gyro_lock.release()
 
 		return True
 
@@ -298,6 +359,10 @@ class PiBot:
 		under the self.gyro list.
 		"""
 
+		self._gyro_lock.acquire()
+
 		ax, ay, az, gx, gy, gz = self._imu.read_accelerometer_gyro_data()
 
 		self.gyro = [ax, ay, az, gx, gy, gz]
+
+		self._gyro_lock.release()

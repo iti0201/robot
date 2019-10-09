@@ -69,11 +69,11 @@ class ICM20948:
 		wiringpi.digitalWrite(self._cs, 0)
 
 		addr = reg
-	
+
 		data = [addr, value]
-		
+
 		self._bus.writebytes(data)
-		time.sleep(0.0001)
+		time.sleep(0.001)
 
 		wiringpi.digitalWrite(self._cs, 1)
 
@@ -84,9 +84,9 @@ class ICM20948:
 
 		addr = 0x80 | reg
 		self._bus.writebytes([addr])
-		
+
 		ret = self._bus.readbytes(1)
-		time.sleep(0.0001)
+		time.sleep(0.001)
 
 		wiringpi.digitalWrite(self._cs, 1)
 
@@ -99,9 +99,9 @@ class ICM20948:
 
 		addr = 0x80 | reg
 		self._bus.writebytes([addr])
-		
+
 		ret = self._bus.readbytes(length)
-		time.sleep(0.0001)
+		time.sleep(0.001)
 
 		wiringpi.digitalWrite(self._cs, 1)
 
@@ -287,6 +287,7 @@ class ICM20948:
 		self.bank(3)
 		self.write(ICM20948_I2C_MST_CTRL, 0x4D)
 		self.write(ICM20948_I2C_MST_DELAY_CTRL, 0x01)
+		self.write(0x05, 0x81)
 
 		if not self.mag_read(AK09916_WIA) == AK09916_CHIP_ID:
                         time.sleep(1)
@@ -297,3 +298,6 @@ class ICM20948:
 		self.mag_write(AK09916_CNTL3, 0x01)
 		while self.mag_read(AK09916_CNTL3) == 0x01:
 			time.sleep(0.0001)
+
+		time.sleep(1)
+		self.mag_write(0x31, 0x02);
