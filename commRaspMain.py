@@ -73,6 +73,7 @@ class PiBot:
 			self._rotation_z = 0.0
 			self._gyro_running = True
 			self._gyro_thread = threading.Thread(target=self._gyro_worker)
+			self._gyro_thread.start()
 
 	def _gyro_worker(self):
 		"""
@@ -84,7 +85,6 @@ class PiBot:
 		"""
 		current_time_millis = lambda: int(round(time.time() * 1000))
 		last_poll = current_time_millis()
-
 		while self._gyro_running:
 			time.sleep(0.001)
 
@@ -97,7 +97,7 @@ class PiBot:
 				continue
 
 			last_poll = time_now
-			delta = self._gyro[5] * delta * 1000
+			delta = self.gyro[5] * delta / 1000
 
 			if -0.1 < delta < 0.1:
 				continue
