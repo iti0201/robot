@@ -86,7 +86,7 @@ class PiBot:
 		current_time_millis = lambda: int(round(time.time() * 1000))
 		last_poll = current_time_millis()
 		while self._gyro_running:
-			time.sleep(0.001)
+			#time.sleep(0.001)
 
 			self._imu_read_gyro()
 
@@ -99,7 +99,7 @@ class PiBot:
 			last_poll = time_now
 			delta = self.gyro[5] * delta / 1000
 
-			if -0.1 < delta < 0.1:
+			if -0.01 < delta < 0.01:
 				continue
 
 			self._rotation_z += delta
