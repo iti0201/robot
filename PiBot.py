@@ -339,14 +339,6 @@ class PiBot(PiBotBase):
         self._update_encoders()
         return self.encoder_converter.get(self.encoder[1])
 
-    def get_gyro(self):
-        self._update_imu()
-        return self.gyro
-
-    def get_compass(self):
-        self._update_imu()
-        return self.compass
-
     def get_rotation(self):
         return self._rotation_z
 
