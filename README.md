@@ -106,6 +106,12 @@ get_right_line_sensors()
 get_line_sensors()
 ```
 
+## Roboti pööre
+Robotilt saab küsida järgmise funktsiooniga, mitu kraadi on ta pööranud algseisundi suhtes.
+```python
+get_rotation()
+```
+
 ## Roboti käpa juhtimine
 Käppa saab liigutada üles ja alla ning lahti ja kinni.
 Järgmine funktsioon liigutab käppa üles ja alla. Argumendiks sobib arv vahemikus 0 kuni 100, kus 0 on kõige madalam käpa kõrgus ja 100 on kõige kõrgem.

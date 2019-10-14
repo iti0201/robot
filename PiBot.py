@@ -156,6 +156,7 @@ class PiBot(PiBotBase):
         self._encoders_enable()
         self._tof_init()
         self._servo_enable()
+        self._gyro_start()
         self.set_grabber_height(50)
         self.close_grabber(50)
         self._adc_conf(3)
@@ -338,13 +339,8 @@ class PiBot(PiBotBase):
         self._update_encoders()
         return self.encoder_converter.get(self.encoder[1])
 
-    def get_gyro(self):
-        self._update_imu()
-        return self.gyro
-
-    def get_compass(self):
-        self._update_imu()
-        return self.compass
+    def get_rotation(self):
+        return self._rotation_z
 
     def _enable_servo_if_not(self):
         if not self.servo_enabled:
