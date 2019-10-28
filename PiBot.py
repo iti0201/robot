@@ -152,12 +152,11 @@ class PiBot(PiBotBase):
         self.AXIS_LENGTH = 0.14
 
     def initialize_robot(self):
-        self._motors_enable()
-        self._encoders_enable()
+        while not all(map(lambda fn: fn(), [self._motors_enable, self._encoders_enable, self._servo_enable])):
+            self.sleep(0.05)
         self._tof_init()
-        self._servo_enable()
         self._gyro_start()
-        self.set_grabber_height(50)
+        self.set_grabber_height(95)
         self.close_grabber(50)
         self._adc_conf(3)
 
