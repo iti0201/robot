@@ -58,7 +58,7 @@ get_front_lasers()
 
 ## Roboti tagumised infrapunasensorid
 Tagumised infrapunasensorid mõõdavad kaugust vahemikus 2 kuni 16 cm.
-Järgmised 3 funktsiooni tagastavad vastavalt tagumise (see pool, kus pole käppa) vasakpoolse otsevaatava, diagonaalselt vaatava ja küljele vaatava infrapunasensori väärtused meetrites.
+Järgmised 3 funktsiooni tagastavad vastavalt tagumise (see pool, kus pole käppa) vasakpoolse otsevaatava, diagonaalselt vaatava ja küljele vaatava infrapunasensori väärtused infrapunaandurite mõõtühikutes, millel puudub otsene ja alati kehtiv teisendus meetriteks. 
 
 ```python
 get_rear_left_straight_ir()
@@ -66,7 +66,7 @@ get_rear_left_diagonal_ir()
 get_rear_left_side_ir()
 ```
 
-Järgmised 3 funktsiooni tagastavad vastavalt tagumise parempoolse otsevaatava, diagonaalselt vaatava ja küljele vaatava infrapunasensori väärtused meetrites.
+Järgmised 3 funktsiooni tagastavad vastavalt tagumise parempoolse otsevaatava, diagonaalselt vaatava ja küljele vaatava infrapunasensori väärtused.
 
 ```python
 get_rear_right_straight_ir()
@@ -74,7 +74,10 @@ get_rear_right_diagonal_ir()
 get_rear_right_side_ir()
 ```
 
-Järgmistest funktsioonidest esimene tagastab kõikide tagumiste infrapunasensorite väärtused järjendis juba loetletud järjekorras. Teine funktsioon tagastab kõikide kaugussensorite väärtused järjendis eespoolt alustades loetletud järjekorras.
+**NB! See tähendab, et te ei saa neid väärtusi otse kasutada vaid peate kasutama näiteks vastaskülgedel asuvate andurite väärtuseid omavahel võrrelduna.
+Näiteks, kui parempoolne andur annab väärtuse `x` ja vasakpoolne väärtuse `1.5 * x`, siis võib järeldada, et robotil on takistus lähemal paremal küljel. Selle info põhjal võib roboti asendit korrigeerida rohkem vasakule, et püsida mõlemast takistusest samal kaugusel.**
+
+Olemas on ka n-ö mugavusfunktsioonid. Alljärgnevatest funktsioonidest esimene tagastab kõikide tagumiste infrapunasensorite väärtused järjendis juba loetletud järjekorras. Teine funktsioon tagastab kõikide kaugussensorite väärtused järjendis eespoolt alustades loetletud järjekorras.
 
 ```python
 get_rear_irs()
