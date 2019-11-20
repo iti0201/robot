@@ -57,7 +57,7 @@ get_front_lasers()
 ```
 
 ## Roboti tagumised infrapunasensorid
-Tagumised infrapunasensorid mõõdavad kaugust vahemikus 2 kuni 16 cm.
+Tagumised infrapunasensorid mõõdavad kaugust vahemikus 2 kuni 16 cm. Mida lähemal on takistus või sein, seda suurem on anduri lugem. Kui anduri lugem muutub ajas väiksemaks, siis robot liigub takistusest kaugemale.
 Järgmised 3 funktsiooni tagastavad vastavalt tagumise (see pool, kus pole käppa) vasakpoolse otsevaatava, diagonaalselt vaatava ja küljele vaatava infrapunasensori väärtused infrapunaandurite mõõtühikutes, millel puudub otsene ja alati kehtiv teisendus meetriteks. 
 
 ```python
