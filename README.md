@@ -74,8 +74,7 @@ get_rear_right_diagonal_ir()
 get_rear_right_side_ir()
 ```
 
-**NB! See tähendab, et te ei saa neid väärtusi otse kasutada vaid peate kasutama näiteks vastaskülgedel asuvate andurite väärtuseid omavahel võrrelduna.
-Näiteks, kui parempoolne andur annab väärtuse `x` ja vasakpoolne väärtuse `1.5 * x`, siis võib järeldada, et robotil on takistus lähemal paremal küljel. Selle info põhjal võib roboti asendit korrigeerida rohkem vasakule, et püsida mõlemast takistusest samal kaugusel.**
+**NB! See tähendab, et te ei saa neid väärtusi otse kasutada vaid peate anduri väärtust ajas võrdlema. Näiteks, kui parempoolne andur annab väärtuse `x` ja mingi aja pärast on see väärtus `1.5 * x`, siis võib järeldada, et robot liigub seinale lähemale. Selle info põhjal võib roboti asendit korrigeerida rohkem vasakule, et püsida seinast esialgsel kaugusel.**
 
 Olemas on ka n-ö mugavusfunktsioonid. Alljärgnevatest funktsioonidest esimene tagastab kõikide tagumiste infrapunasensorite väärtused järjendis juba loetletud järjekorras. Teine funktsioon tagastab kõikide kaugussensorite väärtused järjendis eespoolt alustades loetletud järjekorras.
 
