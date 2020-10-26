@@ -188,6 +188,16 @@ while start_time + 5.0 > time.time():
 print("I did something for 5 seconds!")
 print("Time at end is {}".format(time.time()))
 ```
+```
+Time at start is 1603712446.3673897
+Well, I'm doing something...
+Well, I'm doing something...
+Well, I'm doing something...
+Well, I'm doing something...
+Well, I'm doing something...
+I did something for 5 seconds!
+Time at end is 1603712451.4076521
+```
 
 # Roboti programmi näide
 ```python
