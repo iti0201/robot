@@ -108,7 +108,7 @@ get_right_line_sensors()
 get_line_sensors()
 ```
 
-## Roboti pööre
+## Roboti suund
 Robotilt saab küsida järgmise funktsiooniga, mitu kraadi on ta pööranud algseisundi suhtes.
 ```python
 get_rotation()
