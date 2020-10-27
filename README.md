@@ -188,14 +188,14 @@ print("I did something for 5 seconds!")
 print("Time at end is {}".format(robot.get_time()))
 ```
 ```
-Time at start is 1603712446.3673897
+Time at start is 9.859
 Well, I'm doing something...
 Well, I'm doing something...
 Well, I'm doing something...
 Well, I'm doing something...
 Well, I'm doing something...
 I did something for 5 seconds!
-Time at end is 1603712451.4076521
+Time at end is 14.859
 ```
 
 # Roboti programmi näide
