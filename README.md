@@ -169,24 +169,23 @@ else:
 
 ## Ajatempli lugemine - get_time()
 
-Ajaga tegevuste (nt taimeri) jaoks on võimalik kasutada `time.time()` funktsiooni. Funktsioon tagastab mitu sekundit on möödunud 1970. aasta 1. jaanuari keskööst.
+Ajaga tegevuste (nt taimeri) jaoks on võimalik kasutada `get_time()` funktsiooni. Funktsioon tagastab simulaatoris mitu sekundit on möödunud simulatsiooni algusest. Päris robotil tagastab funktsioon mitu sekundit on möödunud 1970. aasta 1. jaanuari keskööst.
 
 ### Näide
 
 ```
-import time
 from PiBot import PiBot
 
 # Create a robot instance
 robot = PiBot()
 
-start_time = time.time()
+start_time = robot.get_time()
 print("Time at start is {}".format(start_time))
-while start_time + 5.0 > time.time():
+while start_time + 5.0 > robot.get_time():
     print("Well, I'm doing something...")
     robot.sleep(1)
 print("I did something for 5 seconds!")
-print("Time at end is {}".format(time.time()))
+print("Time at end is {}".format(robot.get_time()))
 ```
 ```
 Time at start is 1603712446.3673897
