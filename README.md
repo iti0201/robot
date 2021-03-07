@@ -130,7 +130,7 @@ close_grabber(percentage)
 ## Roboti kaamera
 Roboti kaameral põhineva robotnägemisalgoritmi väljundit on võimalik lugeda meetodiga:
 
-```
+```python
 get_camera_objects()
 ```
 
