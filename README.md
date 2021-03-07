@@ -128,7 +128,13 @@ Järgmine funktsioon liigutab käppa lahti ja kinni. Argumendiks sobib jälle ar
 close_grabber(percentage)
 ```
 ## Roboti kaamera
-Roboti kaameral põhineva robotnägemisalgoritmi väljundit on võimalik lugeda meetodiga `get_camera_objects()`. Antud meetod tagastab järjendi tuvastatud objektidega (algoritm tuvastab ainult sfääre) järgmisel kujul: `[(objekti tüüp, (keskkoha x koordinaat, keskkoha y koordinaat), objekti raadius), ...]`. Kaamera teljestik algab vasakult ülevalt ning x-telg on paremale ja y-telg on alla.
+Roboti kaameral põhineva robotnägemisalgoritmi väljundit on võimalik lugeda meetodiga:
+
+```
+get_camera_objects()
+```
+
+Antud meetod tagastab järjendi tuvastatud objektidega (algoritm tuvastab ainult sfääre) järgmisel kujul: `[(objekti tüüp, (keskkoha x koordinaat, keskkoha y koordinaat), objekti raadius), ...]`. Kaamera teljestik algab vasakult ülevalt ning x-telg on paremale ja y-telg on alla.
 
 ## Konstandid
 PiBoti klassis on defineeritud arvutuste jaoks vajalikud konstandid. Roboti ratta diameeter meetrites on kirjas klassimuutujas `WHEEL_DIAMETER` ja roboti telje pikkus meetrites on klassimuutujas `AXIS_LENGTH`. Kaamera pisklite arvud on kirjas klassimuutujas `CAMERA_RESOLUTION` (laius, pikkus). Kaamera vaatevälja laiused on kirjas klassimuutujas `CAMERA_FIELD_OF_VIEW` (horisontaalne laius kraadides, vertikaalne laius kraadides).
