@@ -1,3 +1,8 @@
+# Enable parent directory import
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 # coding=utf-8
 """Test claw."""
 from commRaspMain import PiBot
