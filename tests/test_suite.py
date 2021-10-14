@@ -32,7 +32,7 @@ def main():
 
     # robot._rotation_z
     while True:
-        robot._update_tof_sensors()
+        robot._tof_read()
         print("l {} m {} r {}".format(robot.tof_values[0], robot.tof_values[1], robot.tof_values[2]))
         time.sleep(0.1)
 
