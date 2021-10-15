@@ -126,7 +126,8 @@ class PiBot(PiBotBase):
         super().__init__()
 
         # Read robot number
-        robot_nr = int(os.environ["ROBOT_ID"])
+        if robot_nr == 0:
+            robot_nr = int(os.environ["ROBOT_ID"])
 
         # Converters
         self.converters = SensorConverter.make_converters("converters{}.txt".format(robot_nr))
