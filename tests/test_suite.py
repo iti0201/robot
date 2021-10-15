@@ -89,6 +89,7 @@ def main():
     # Switch to non-raw
     robot.sleep(1)
     robot = PiBot.PiBot(number)
+    robot.sleep(8)
 
 if __name__ == "__main__":
     main()
