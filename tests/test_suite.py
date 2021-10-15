@@ -21,8 +21,15 @@ class Log:
                 f.write(line + "\n")
 
 class Test:
-    def __init__(self, logger, prompt):
+    def __init__(self, logger, prompt, identifier, command, args, delays, query):
         self.logger = logger
+        self.prompt = prompt
+        self.identifier = identifier
+        self.command = command
+        self.args = args
+        self.delays = delays
+        self.query = query
+
         self.logger(prompt)
         
     def execute(self):
@@ -33,10 +40,10 @@ class Suite:
         self.logger = Log()
         self.tests = []
 
-    def add(self, prompt):
-        self.tests.append(Test(self.logger, prompt))
+    def add(self, prompt, identifier, command, args, delays, query):
+        self.tests.append(Test(self.logger, prompt, identifier, command, args, delays, query))
 
-def get_suite():
+def get_suite(robot):
     # Place robot with ToF left laser 30 cm from wall
     # Place robot with ToF middle laser 30 cm from wall
     # Place robot with ToF right laser 30 cm from wall
@@ -79,20 +86,19 @@ def main():
             number = os.environ["ROBOT_ID"]
         except:
             number = int(input("Enter robot number (1-5):"))
-        suite = get_suite()
+        robot = PiBot.PiBot(robot_nr=number, directory="../")
+        suite = get_suite(robot)
         gripper = input("Include gripper tests (0=no, 1=yes)? [1]")
         if gripper != "0":
-            # Clear gripper space... testing gripper up-down
             # Clear gripper space... testing gripper open-close
-            suite.add("updown")
-            suite.add("openclose")
-        robot = PiBot.PiBot(robot_nr=number, directory="../")
+            suite.add("Clear gripper space... testing gripper up-down", "gripper up-down", robot.set_grabber_height, [60, 10], [5, 5], None)
+            suite.add("Clear gripper space... testing gripper open-close", "gripper open-close", robot.close_grabber, [80, 5], [5, 5], None)
         time.sleep(8)
 
         sys.exit()
     else:
         # Raw mode
-        suite = get_suite()
+        suite = get_suite(robot)
         robot = commRaspMain.PiBot()
         robot._motors_enable()
         robot._encoders_enable()
