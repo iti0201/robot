@@ -28,7 +28,15 @@ class Test:
     def execute(self):
         pass
 
-def main():
+class Suite:
+    def __init__(self):
+        self.logger = Log()
+        self.tests = []
+
+    def add(self, prompt):
+        self.tests.append(Test(self.logger, prompt))
+
+def get_suite():
     # Place robot with ToF left laser 30 cm from wall
     # Place robot with ToF middle laser 30 cm from wall
     # Place robot with ToF right laser 30 cm from wall
@@ -50,9 +58,9 @@ def main():
 
     # Place robot in free space... testing left motor 
     # Place robot in free space... testing right motor 
+    pass
 
-    # Clear gripper space... testing gripper up-down
-    # Clear gripper space... testing gripper open-close
+def main():
 
     # F L L
     # robot.tof_values[0]
@@ -71,12 +79,20 @@ def main():
             number = os.environ["ROBOT_ID"]
         except:
             number = int(input("Enter robot number (1-5):"))
+        suite = get_suite()
+        gripper = input("Include gripper tests (0=no, 1=yes)? [1]")
+        if gripper != "0":
+            # Clear gripper space... testing gripper up-down
+            # Clear gripper space... testing gripper open-close
+            suite.add("updown")
+            suite.add("openclose")
         robot = PiBot.PiBot(robot_nr=number, directory="../")
         time.sleep(8)
-        print("ok?")
+
         sys.exit()
     else:
         # Raw mode
+        suite = get_suite()
         robot = commRaspMain.PiBot()
         robot._motors_enable()
         robot._encoders_enable()
