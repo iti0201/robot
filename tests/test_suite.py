@@ -5,6 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import commRaspMain
 import PiBot
+import time
 
 class Log:
     def __init__(self):
@@ -87,9 +88,9 @@ def main():
     #    time.sleep(0.1)
 
     # Switch to non-raw
-    robot.sleep(1)
+    time.sleep(1)
     robot = PiBot.PiBot(number)
-    robot.sleep(8)
+    time.sleep(8)
 
 if __name__ == "__main__":
     main()
