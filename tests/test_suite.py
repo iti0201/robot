@@ -91,6 +91,7 @@ def main():
     time.sleep(1)
     robot = PiBot.PiBot(robot_nr=number, directory="../")
     time.sleep(8)
+    sys.exit()
 
 if __name__ == "__main__":
     main()
