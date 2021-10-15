@@ -65,33 +65,33 @@ def main():
     # compass
     # motors
     # gripper
-    try:
-        number = os.environ["ROBOT_ID"]
-    except:
-        number = int(input("Enter robot number (1-5):"))
-    # Do raw mode first...
-    robot = commRaspMain.PiBot()
-    robot._motors_enable()
-    robot._encoders_enable()
-    robot._servo_enable()
+    if input("Mode 0=raw / 1=wrapper: ? [0]") == "1":
+        # Wrapped mode
+        try:
+            number = os.environ["ROBOT_ID"]
+        except:
+            number = int(input("Enter robot number (1-5):"))
+        robot = PiBot.PiBot(robot_nr=number, directory="../")
+        time.sleep(8)
+    else:
+        # Raw mode
+        robot = commRaspMain.PiBot()
+        robot._motors_enable()
+        robot._encoders_enable()
+        robot._servo_enable()
 
-    robot._motorL_set(0)
-    robot._motorR_set(0)
+        robot._motorL_set(0)
+        robot._motorR_set(0)
 
-    robot._tof_init()
-    robot._adc_conf(3)
+        robot._tof_init()
+        robot._adc_conf(3)
 
-    # robot._rotation_z
-    #while True:
-    #    robot._tof_read()
-    #    print("l {} m {} r {}".format(robot.tof_values[0], robot.tof_values[1], robot.tof_values[2]))
-    #    time.sleep(0.1)
+        # robot._rotation_z
+        #while True:
+        #    robot._tof_read()
+        #    print("l {} m {} r {}".format(robot.tof_values[0], robot.tof_values[1], robot.tof_values[2]))
+        #    time.sleep(0.1)
 
-    # Switch to non-raw
-    time.sleep(1)
-    robot = PiBot.PiBot(robot_nr=number, directory="../")
-    time.sleep(8)
-    sys.exit()
 
 if __name__ == "__main__":
     main()
