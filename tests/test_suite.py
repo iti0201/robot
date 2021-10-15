@@ -89,7 +89,7 @@ def main():
 
     # Switch to non-raw
     time.sleep(1)
-    robot = PiBot.PiBot(number)
+    robot = PiBot.PiBot(robot_nr=number, directory="../")
     time.sleep(8)
 
 if __name__ == "__main__":
