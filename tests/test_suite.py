@@ -73,6 +73,8 @@ def main():
             number = int(input("Enter robot number (1-5):"))
         robot = PiBot.PiBot(robot_nr=number, directory="../")
         time.sleep(8)
+        print("ok?")
+        sys.exit()
     else:
         # Raw mode
         robot = commRaspMain.PiBot()
