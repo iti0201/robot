@@ -61,9 +61,12 @@ class Test:
                 self.command(arg)
                 time.sleep(self.delays[i])
                 print("Done!")
-                if self.result_query is not None:
-                    result = self.result_query()
-                    self.logger.write("Result = {}".format(result))
+                for i in len(self.result_query):
+                    if callable(self.result_query[i]):
+                        result = self.result_query[i]()
+                    else:
+                        result = self.result_query[i]
+                self.logger.write("Result = {}".format(result))
 
 
 class Suite:
@@ -74,16 +77,46 @@ class Suite:
         self.logger = Log()
         self.tests = []
 
-    def add(self, prompt, identifier, command, args, delays, result_query):
+    def add(self, prompt, identifier, command, args: list,
+            delays: list, result_query: list):
         """Add a test to suite."""
         self.tests.append(Test(self.logger, prompt,
                                identifier, command, args,
                                delays, result_query))
 
+    def execute(self):
+        """Execute the test suite."""
+        for test in self.tests:
+            test.execute()
+
 
 def get_suite(robot):
-    """Compile a test suite."""
-    # Place robot with ToF left laser 30 cm from wall
+    """
+    Compile the test suite.
+
+    Args:
+      robot -- either PiBot.PiBot() or commRaspMain.PiBot()
+
+    Returns:
+      Suite instance
+    """
+    suite = Suite()
+    measure = {}
+    import PiBot
+    if type(robot) == PiBot.PiBot:
+        # Wrapped
+        measure['FLL'] = [robot.get_front_left_laser]
+    else:
+        # Raw
+        measure['FLL'] = [robot._tof_read, robot.tof_values[1]]
+
+    for distance in [20, 30, 40, 50]:
+        suite.add("Place robot with ToF left laser {} cm from wall"
+                  .format(distance),
+                  "FLL@{}".format(distance),
+                  None,
+                  [], [], measure['FLL'])
+
     # Place robot with ToF middle laser 30 cm from wall
     # Place robot with ToF right laser 30 cm from wall
     # Place robot with ToF left laser 50 cm from wall
@@ -104,7 +137,7 @@ def get_suite(robot):
 
     # Place robot in free space... testing left motor
     # Place robot in free space... testing right motor
-    pass
+    return suite
 
 
 def main():
@@ -136,10 +169,10 @@ def main():
         if gripper != "0":
             suite.add("Clear gripper space... testing gripper up-down",
                       "gripper up-down", robot.set_grabber_height,
-                      [60, 10], [5, 5], None)
+                      [60, 10], [5, 5], [])
             suite.add("Clear gripper space... testing gripper open-close",
                       "gripper open-close", robot.close_grabber,
-                      [80, 5], [5, 5], None)
+                      [80, 5], [5, 5], [])
         time.sleep(8)
 
         sys.exit()
