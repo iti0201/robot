@@ -62,6 +62,7 @@ class Test:
 
     def _measure(self, query):
         i = 0
+        result = None
         while i < len(query):
             if callable(query[i][0]):
                 if len(query[i]) == 1:
