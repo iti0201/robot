@@ -80,6 +80,7 @@ class Test:
             if i == len(self.result_query) - 1:
                 print("Measured value is: {}".format(result))
                 self.logger.write(self.identifier, result)
+            i += 1
 
 
 class Suite:
