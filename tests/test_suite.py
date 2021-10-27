@@ -68,12 +68,15 @@ class Test:
                 self.command(arg)
                 time.sleep(self.delays[i])
                 print("Done!")
-        for i in range(len(self.result_query)):
+        i = 0
+        while i < len(self.result_query):
             if callable(self.result_query[i]):
                 print("calling {}".format(self.result_query[i]))
                 result = self.result_query[i]()
             else:
                 result = self.result_query[i]
+                if result is None:
+                    i = 0
             if i == len(self.result_query) - 1:
                 print("Measured value is: {}".format(result))
                 self.logger.write(self.identifier, result)
@@ -202,13 +205,15 @@ def main():
     else:
         # Raw mode
         robot = commRaspMain.PiBot()
-        suite = get_suite(robot)
-        robot._motors_enable()
-        robot._encoders_enable()
-        robot._servo_enable()
-        robot._tof_init()
+        while not all(map(lambda fn: fn(), [self._motors_enable, self._encoders_enable, self._servo_enable, self._tof_init])):
+            self.sleep(0.05)
+        #robot._motors_enable()
+        #robot._encoders_enable()
+        #robot._servo_enable()
+        #robot._tof_init()
         robot._gyro_start()
         robot._adc_conf(3)
+        suite = get_suite(robot)
 
         robot._motorL_set(0)
         robot._motorR_set(0)
