@@ -40,7 +40,7 @@ class Log:
         for entry in self.log.items():
             identifiers += ";" + entry[0] if len(identifiers) > 0 else entry[0]
             values += ";" + str(entry[1]) if len(values) > 0 else entry[1]
-        with open(filename) as f:
+        with open(filename, 'a') as f:
             f.write(identifiers + "\n")
             f.write(values + "\n")
 
@@ -72,7 +72,8 @@ class Test:
                         result = self.result_query[i]()
                     else:
                         result = self.result_query[i]
-                self.logger.write(self.identifier, result)
+                    print("Measured value is: {}".format(result))
+                    self.logger.write(self.identifier, result)
 
 
 class Suite:
