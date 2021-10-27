@@ -96,7 +96,7 @@ class Test:
         if initial_value is None:
             self.logger.write(self.identifier, final_value)
         else:
-            self.logger.write(self.identifier, initial_value - final_value)
+            self.logger.write(self.identifier, final_value - initial_value)
 
 
 class Suite:
@@ -173,7 +173,7 @@ def get_suite(robot):
         measure['LSR'] = [[robot._adc_read], [robot.sensor, 8]]
         measure['LSSR'] = [[robot._adc_read], [robot.sensor, 9]]
         measure['LSTR'] = [[robot._adc_read], [robot.sensor, 10]]
-        measure['COMPASS'] = [[robot._rotation_z]]
+        measure['COMPASS'] = [[lambda: robot._rotation_z]]
         actuate['LEFT'] = robot._motorL_set
         actuate['RIGHT'] = robot._motorR_set
 
