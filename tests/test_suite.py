@@ -64,19 +64,21 @@ class Test:
         self.logger.query(self.prompt)
         for i, arg in enumerate(self.args):
             if self.command is not None:
-                print("Sending command {}".format(self.command))
+                print("Sending command {} with arg {}".format(self.command, arg))
                 self.command(arg)
                 time.sleep(self.delays[i])
                 print("Done!")
         i = 0
         while i < len(self.result_query):
-            if callable(self.result_query[i]):
-                print("calling {}".format(self.result_query[i]))
-                result = self.result_query[i]()
+            if callable(self.result_query[i][0]):
+                result = self.result_query[i][0]()
             else:
-                result = self.result_query[i]
+                if len(self.result_query[i]) > 1:
+                    result = self.result_query[i][0][self.result_query[i][1]]
+                else:
+                    result = self.result_query[i][0]
                 if result is None:
-                    i = 0
+                    i = -1
             if i == len(self.result_query) - 1:
                 print("Measured value is: {}".format(result))
                 self.logger.write(self.identifier, result)
@@ -121,14 +123,14 @@ def get_suite(robot):
     import PiBot
     if type(robot) == PiBot.PiBot:
         # Wrapped
-        measure['FLL'] = [robot.get_front_left_laser]
-        measure['FML'] = [robot.get_front_middle_laser]
-        measure['FRL'] = [robot.get_front_right_laser]
+        measure['FLL'] = [[robot.get_front_left_laser]]
+        measure['FML'] = [[robot.get_front_middle_laser]]
+        measure['FRL'] = [[robot.get_front_right_laser]]
     else:
         # Raw
-        measure['FLL'] = [robot._tof_read, robot.tof_values[0]]
-        measure['FML'] = [robot._tof_read, robot.tof_values[1]]
-        measure['FRL'] = [robot._tof_read, robot.tof_values[2]]
+        measure['FLL'] = [[robot._tof_read], [robot.tof_values, 0]]
+        measure['FML'] = [[robot._tof_read], [robot.tof_values, 1]]
+        measure['FRL'] = [[robot._tof_read], [robot.tof_values, 2]]
 
     for distance in [10, 20, 30, 40, 50, 60]:
         suite.add("Place robot with ToF left laser {} cm from wall"
@@ -147,11 +149,6 @@ def get_suite(robot):
                   None,
                   [], [], measure['FRL'])
 
-    # Place robot with ToF middle laser 30 cm from wall
-    # Place robot with ToF right laser 30 cm from wall
-    # Place robot with ToF left laser 50 cm from wall
-    # Place robot with ToF middle laser 50 cm from wall
-    # Place robot with ToF right laser 50 cm from wall
 
     # Place robot with IR left side 5 cm from wall
     # Place robot with IR left diagonal 5 cm from wall
