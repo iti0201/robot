@@ -126,11 +126,35 @@ def get_suite(robot):
         measure['FLL'] = [[robot.get_front_left_laser]]
         measure['FML'] = [[robot.get_front_middle_laser]]
         measure['FRL'] = [[robot.get_front_right_laser]]
+        measure['RLS'] = [[robot.get_rear_left_side_ir]]
+        measure['RLD'] = [[robot.get_rear_left_diagonal_ir]]
+        measure['RLF'] = [[robot.get_rear_left_straight_ir]]
+        measure['RRS'] = [[robot.get_rear_right_side_ir]]
+        measure['RRD'] = [[robot.get_rear_right_diagonal_ir]]
+        measure['RRF'] = [[robot.get_rear_right_straight_ir]]
+        measure['LSL'] = [[robot.get_leftmost_line_sensor]]
+        measure['LSSL'] = [[robot.get_second_line_sensor_from_left]]
+        measure['LSTL'] = [[robot.get_third_line_sensor_from_left]]
+        measure['LSR'] = [[robot.get_rightmost_line_sensor]]
+        measure['LSSR'] = [[robot.get_second_line_sensor_from_right]]
+        measure['LSTR'] = [[robot.get_third_line_sensor_from_right]]
     else:
         # Raw
         measure['FLL'] = [[robot._tof_read], [robot.tof_values, 0]]
         measure['FML'] = [[robot._tof_read], [robot.tof_values, 1]]
         measure['FRL'] = [[robot._tof_read], [robot.tof_values, 2]]
+        measure['RLS'] = [[robot._update_first_sensor_block], [robot.sensor, 0]]
+        measure['RLD'] = [[robot._update_first_sensor_block], [robot.sensor, 1]]
+        measure['RLF'] = [[robot._update_first_sensor_block], [robot.sensor, 2]]
+        measure['RRS'] = [[robot._update_first_sensor_block], [robot.sensor, 5]]
+        measure['RRD'] = [[robot._update_first_sensor_block], [robot.sensor, 4]]
+        measure['RRF'] = [[robot._update_first_sensor_block], [robot.sensor, 3]]
+        measure['LSL'] = [[robot._update_second_sensor_block], [robot.sensor, 13]]
+        measure['LSSL'] = [[robot._update_second_sensor_block], [robot.sensor, 12]]
+        measure['LSTL'] = [[robot._update_second_sensor_block], [robot.sensor, 11]]
+        measure['LSR'] = [[robot._update_second_sensor_block], [robot.sensor, 8]]
+        measure['LSSR'] = [[robot._update_second_sensor_block], [robot.sensor, 9]]
+        measure['LSTR'] = [[robot._update_second_sensor_block], [robot.sensor, 10]]
 
     for distance in [10, 20, 30, 40, 50, 60]:
         suite.add("Place robot with ToF left laser {} cm from wall"
@@ -148,17 +172,69 @@ def get_suite(robot):
                   "FRL@{}".format(distance),
                   None,
                   [], [], measure['FRL'])
+    for distance in [4, 8, 12]:
+        suite.add("Place robot with IR left side {} cm from wall"
+                  .format(distance),
+                  "RLS@{}".format(distance),
+                  None,
+                  [], [], measure['RLS'])
+        suite.add("Place robot with IR left diagonal {} cm from wall"
+                  .format(distance),
+                  "RLD@{}".format(distance),
+                  None,
+                  [], [], measure['RLD'])
+        suite.add("Place robot with IR left straight {} cm from wall"
+                  .format(distance),
+                  "RLF@{}".format(distance),
+                  None,
+                  [], [], measure['RLF'])
+        suite.add("Place robot with IR right side {} cm from wall"
+                  .format(distance),
+                  "RRS@{}".format(distance),
+                  None,
+                  [], [], measure['RRS'])
+        suite.add("Place robot with IR right diagonal {} cm from wall"
+                  .format(distance),
+                  "RRD@{}".format(distance),
+                  None,
+                  [], [], measure['RRD'])
+        suite.add("Place robot with IR right straight {} cm from wall"
+                  .format(distance),
+                  "RRF@{}".format(distance),
+                  None,
+                  [], [], measure['RRF'])
+    for color in ["white", "black"]:
+        suite.add("Place robot with leftmost line sensor on {}"
+                  .format(color),
+                  "LS leftmost@{}".format(color),
+                  None,
+                  [], [], measure['LSL'])
+        suite.add("Place robot with second line sensor from left on {}"
+                  .format(color),
+                  "LS second from left@{}".format(color),
+                  None,
+                  [], [], measure['LSSL'])
+        suite.add("Place robot with third line sensor from left on {}"
+                  .format(color),
+                  "LS third from left@{}".format(color),
+                  None,
+                  [], [], measure['LSTL'])
+        suite.add("Place robot with rightmost line sensor on {}"
+                  .format(color),
+                  "LS rightmost@{}".format(color),
+                  None,
+                  [], [], measure['LSR'])
+        suite.add("Place robot with second line sensor from right on {}"
+                  .format(color),
+                  "LS second from right@{}".format(color),
+                  None,
+                  [], [], measure['LSSR'])
+        suite.add("Place robot with third line sensor from right on {}"
+                  .format(color),
+                  "LS third from right@{}".format(color),
+                  None,
+                  [], [], measure['LSTR'])
 
-
-    # Place robot with IR left side 5 cm from wall
-    # Place robot with IR left diagonal 5 cm from wall
-    # Place robot with IR left rear 5 cm from wall
-    # Place robot with IR right side 5 cm from wall
-    # Place robot with IR right diagonal 5 cm from wall
-    # Place robot with IR right rear 5 cm from wall
-
-    # Place robot with with line sensors on white
-    # Place robot with with line sensors on black
 
     # Testing compass by rotating 360 degrees
 
