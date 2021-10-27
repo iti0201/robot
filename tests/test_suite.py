@@ -206,8 +206,8 @@ def main():
     else:
         # Raw mode
         robot = commRaspMain.PiBot()
-        while not all(map(lambda fn: fn(), [self._motors_enable, self._encoders_enable, self._servo_enable, self._tof_init])):
-            self.sleep(0.05)
+        while not all(map(lambda fn: fn(), [robot._motors_enable, robot._encoders_enable, robot._servo_enable, robot._tof_init])):
+            time.sleep(0.05)
         #robot._motors_enable()
         #robot._encoders_enable()
         #robot._servo_enable()
