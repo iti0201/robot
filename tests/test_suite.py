@@ -70,6 +70,7 @@ class Test:
                 print("Done!")
         for i in range(len(self.result_query)):
             if callable(self.result_query[i]):
+                print("calling {}".format(self.result_query[i]))
                 result = self.result_query[i]()
             else:
                 result = self.result_query[i]
@@ -205,12 +206,13 @@ def main():
         robot._motors_enable()
         robot._encoders_enable()
         robot._servo_enable()
+        robot._tof_init()
+        robot._gyro_start()
+        robot._adc_conf(3)
 
         robot._motorL_set(0)
         robot._motorR_set(0)
 
-        robot._tof_init()
-        robot._adc_conf(3)
 
         # robot._rotation_z
         # while True:
