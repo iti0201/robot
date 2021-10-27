@@ -134,6 +134,7 @@ def get_suite(robot):
     """
     suite = Suite()
     measure = {}
+    actuate = {}
     import PiBot
     if type(robot) == PiBot.PiBot:
         # Wrapped
