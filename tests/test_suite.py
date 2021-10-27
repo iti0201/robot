@@ -152,6 +152,9 @@ def get_suite(robot):
         measure['LSR'] = [[robot.get_rightmost_line_sensor]]
         measure['LSSR'] = [[robot.get_second_line_sensor_from_right]]
         measure['LSTR'] = [[robot.get_third_line_sensor_from_right]]
+        measure['COMPASS'] = [[robot.get_rotation]]
+        actuate['LEFT'] = robot.set_left_wheel_speed
+        actuate['RIGHT'] = robot.set_right_wheel_speed
     else:
         # Raw
         measure['FLL'] = [[robot._tof_read], [robot.tof_values, 0]]
@@ -169,6 +172,9 @@ def get_suite(robot):
         measure['LSR'] = [[robot._adc_read], [robot.sensor, 8]]
         measure['LSSR'] = [[robot._adc_read], [robot.sensor, 9]]
         measure['LSTR'] = [[robot._adc_read], [robot.sensor, 10]]
+        measure['COMPASS'] = [[robot._rotation_z]]
+        actuate['LEFT'] = robot._motorL_set
+        actuate['RIGHT'] = robot._motorR_set
 
     for distance in [10, 20, 30, 40, 50, 60]:
         suite.add("Place robot with ToF left laser {} cm from wall"
@@ -248,6 +254,11 @@ def get_suite(robot):
                   "LS third from right@{}".format(color),
                   None,
                   [], [], measure['LSTR'], [])
+    # Compass test
+    suite.add("Clear rotation space for compass test",
+              "compass",
+              actuate['LEFT'],
+              [12, 0], [5, 0], measure['COMPASS'], measure['COMPASS'])
 
 
     # Testing compass by rotating 360 degrees
