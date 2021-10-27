@@ -71,7 +71,10 @@ class Test:
         i = 0
         while i < len(self.result_query):
             if callable(self.result_query[i][0]):
-                result = self.result_query[i][0]()
+                if len(self.result_query[i]) == 1:
+                    result = self.result_query[i][0]()
+                else:
+                    result = self.result_query[i][0](self.result_query[i][1])
             else:
                 if len(self.result_query[i]) > 1:
                     result = self.result_query[i][0][self.result_query[i][1]]
@@ -143,18 +146,18 @@ def get_suite(robot):
         measure['FLL'] = [[robot._tof_read], [robot.tof_values, 0]]
         measure['FML'] = [[robot._tof_read], [robot.tof_values, 1]]
         measure['FRL'] = [[robot._tof_read], [robot.tof_values, 2]]
-        measure['RLS'] = [[robot._update_first_sensor_block], [robot.sensor, 0]]
-        measure['RLD'] = [[robot._update_first_sensor_block], [robot.sensor, 1]]
-        measure['RLF'] = [[robot._update_first_sensor_block], [robot.sensor, 2]]
-        measure['RRS'] = [[robot._update_first_sensor_block], [robot.sensor, 5]]
-        measure['RRD'] = [[robot._update_first_sensor_block], [robot.sensor, 4]]
-        measure['RRF'] = [[robot._update_first_sensor_block], [robot.sensor, 3]]
-        measure['LSL'] = [[robot._update_second_sensor_block], [robot.sensor, 13]]
-        measure['LSSL'] = [[robot._update_second_sensor_block], [robot.sensor, 12]]
-        measure['LSTL'] = [[robot._update_second_sensor_block], [robot.sensor, 11]]
-        measure['LSR'] = [[robot._update_second_sensor_block], [robot.sensor, 8]]
-        measure['LSSR'] = [[robot._update_second_sensor_block], [robot.sensor, 9]]
-        measure['LSTR'] = [[robot._update_second_sensor_block], [robot.sensor, 10]]
+        measure['RLS'] = [[robot._adc_read, 1], [robot.sensor, 0]]
+        measure['RLD'] = [[robot._adc_read, 1], [robot.sensor, 1]]
+        measure['RLF'] = [[robot._adc_read, 1], [robot.sensor, 2]]
+        measure['RRS'] = [[robot._adc_read, 1], [robot.sensor, 5]]
+        measure['RRD'] = [[robot._adc_read, 1], [robot.sensor, 4]]
+        measure['RRF'] = [[robot._adc_read, 1], [robot.sensor, 3]]
+        measure['LSL'] = [[robot._adc_read, 2], [robot.sensor, 13]]
+        measure['LSSL'] = [[robot._adc_read, 2], [robot.sensor, 12]]
+        measure['LSTL'] = [[robot._adc_read, 2], [robot.sensor, 11]]
+        measure['LSR'] = [[robot._adc_read, 2], [robot.sensor, 8]]
+        measure['LSSR'] = [[robot._adc_read, 2], [robot.sensor, 9]]
+        measure['LSTR'] = [[robot._adc_read, 2], [robot.sensor, 10]]
 
     for distance in [10, 20, 30, 40, 50, 60]:
         suite.add("Place robot with ToF left laser {} cm from wall"
