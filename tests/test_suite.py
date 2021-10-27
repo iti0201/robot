@@ -262,8 +262,6 @@ def get_suite(robot):
               [12, 0], [5, 0], measure['COMPASS'], measure['COMPASS'])
 
 
-    # Testing compass by rotating 360 degrees
-
     # Place robot in free space... testing left motor
     # Place robot in free space... testing right motor
 
@@ -277,8 +275,6 @@ def main():
                                                  "..")))
     import commRaspMain
     import PiBot
-    # compass
-    # motors
     if input("Mode 0=raw / 1=wrapper: ? [0]") == "1":
         # Wrapped mode
         try:
