@@ -27,7 +27,6 @@ class Log:
 
     def write(self, identifier: str, message: str):
         """Write a message to log."""
-        print(message)
         self.log[identifier] = message
 
     def dump(self, filename=None):
@@ -35,11 +34,12 @@ class Log:
         if filename is None:
             current_datetime = datetime.datetime.now()
             filename = current_datetime.strftime("results_%Y%m%d%H%M%S.csv")
+        print("Writing results to \"{}\"".format(filename))
         identifiers = ""
         values = ""
         for entry in self.log.items():
-            identifiers += ";" + entry[0] if len(identifiers) > 0 else entry[0]
-            values += ";" + str(entry[1]) if len(values) > 0 else entry[1]
+            identifiers += ";" + entry[0] if len(identifiers) > 0 else str(entry[0])
+            values += ";" + str(entry[1]) if len(values) > 0 else str(entry[1])
         with open(filename, 'a') as f:
             f.write(identifiers + "\n")
             f.write(values + "\n")
@@ -64,16 +64,18 @@ class Test:
         self.logger.query(self.prompt)
         for i, arg in enumerate(self.args):
             if self.command is not None:
+                print("Sending command {}".format(self.command))
                 self.command(arg)
                 time.sleep(self.delays[i])
                 print("Done!")
-                for i in len(self.result_query):
-                    if callable(self.result_query[i]):
-                        result = self.result_query[i]()
-                    else:
-                        result = self.result_query[i]
-                    print("Measured value is: {}".format(result))
-                    self.logger.write(self.identifier, result)
+        for i in range(len(self.result_query)):
+            if callable(self.result_query[i]):
+                result = self.result_query[i]()
+            else:
+                result = self.result_query[i]
+            if i == len(self.result_query) - 1:
+                print("Measured value is: {}".format(result))
+                self.logger.write(self.identifier, result)
 
 
 class Suite:
@@ -96,6 +98,7 @@ class Suite:
         for test in self.tests:
             test.execute()
         self.logger.dump()
+        print("Finished!")
 
 
 def get_suite(robot):
