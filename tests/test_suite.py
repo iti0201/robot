@@ -117,16 +117,30 @@ def get_suite(robot):
     if type(robot) == PiBot.PiBot:
         # Wrapped
         measure['FLL'] = [robot.get_front_left_laser]
+        measure['FML'] = [robot.get_front_middle_laser]
+        measure['FRL'] = [robot.get_front_right_laser]
     else:
         # Raw
-        measure['FLL'] = [robot._tof_read, robot.tof_values[1]]
+        measure['FLL'] = [robot._tof_read, robot.tof_values[0]]
+        measure['FML'] = [robot._tof_read, robot.tof_values[1]]
+        measure['FRL'] = [robot._tof_read, robot.tof_values[2]]
 
-    for distance in [20, 30, 40, 50]:
+    for distance in [10, 20, 30, 40, 50, 60]:
         suite.add("Place robot with ToF left laser {} cm from wall"
                   .format(distance),
                   "FLL@{}".format(distance),
                   None,
                   [], [], measure['FLL'])
+        suite.add("Place robot with ToF middle laser {} cm from wall"
+                  .format(distance),
+                  "FML@{}".format(distance),
+                  None,
+                  [], [], measure['FML'])
+        suite.add("Place robot with ToF right laser {} cm from wall"
+                  .format(distance),
+                  "FRL@{}".format(distance),
+                  None,
+                  [], [], measure['FRL'])
 
     # Place robot with ToF middle laser 30 cm from wall
     # Place robot with ToF right laser 30 cm from wall
