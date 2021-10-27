@@ -3,6 +3,7 @@ import sys
 import os
 import time
 import datetime
+import collections
 
 
 class Log:
@@ -10,33 +11,38 @@ class Log:
 
     def __init__(self):
         """Initialize."""
-        self.log = []
+        self.log = collections.OrderedDict()
 
     def query(self, message: str):
         """
         Query the user for input.
 
         Args:
-          message - string to display the user
+          message - string to display the user and waits for input
 
         Returns:
           None
         """
-        pass
+        return input(message + " [Press ENTER to continue]")
 
-    def write(self, message: str):
+    def write(self, identifier: str, message: str):
         """Write a message to log."""
         print(message)
-        self.log.append(message)
+        self.log[identifier] = message
 
     def dump(self, filename=None):
         """Dump the log into log file."""
         if filename is None:
             current_datetime = datetime.datetime.now()
             filename = current_datetime.strftime("results_%Y%m%d%H%M%S.csv")
+        identifiers = ""
+        values = ""
+        for entry in self.log.items():
+            identifiers += ";" + entry[0] if len(identifiers) > 0 else entry[0]
+            values += ";" + str(entry[1]) if len(values) > 0 else entry[1]
         with open(filename) as f:
-            for line in self.log:
-                f.write(line + "\n")
+            f.write(identifiers + "\n")
+            f.write(values + "\n")
 
 
 class Test:
@@ -66,7 +72,7 @@ class Test:
                         result = self.result_query[i]()
                     else:
                         result = self.result_query[i]
-                self.logger.write("Result = {}".format(result))
+                self.logger.write(self.identifier, result)
 
 
 class Suite:
@@ -88,6 +94,7 @@ class Suite:
         """Execute the test suite."""
         for test in self.tests:
             test.execute()
+        self.logger.dump()
 
 
 def get_suite(robot):
@@ -173,9 +180,6 @@ def main():
             suite.add("Clear gripper space... testing gripper open-close",
                       "gripper open-close", robot.close_grabber,
                       [80, 5], [5, 5], [])
-        time.sleep(8)
-
-        sys.exit()
     else:
         # Raw mode
         suite = get_suite(robot)
@@ -197,6 +201,7 @@ def main():
         #                                  robot.tof_values[1],
         #                                  robot.tof_values[2]))
         #    time.sleep(0.1)
+    suite.execute()
 
 
 if __name__ == "__main__":
