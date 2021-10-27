@@ -200,8 +200,8 @@ def main():
                       [80, 5], [5, 5], [])
     else:
         # Raw mode
-        suite = get_suite(robot)
         robot = commRaspMain.PiBot()
+        suite = get_suite(robot)
         robot._motors_enable()
         robot._encoders_enable()
         robot._servo_enable()
