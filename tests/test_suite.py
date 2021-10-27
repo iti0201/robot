@@ -49,7 +49,7 @@ class Test:
     """Test class for executing a single test."""
 
     def __init__(self, logger, prompt,
-                 identifier, command, args, delays, result_query):
+                 identifier, command, args, delays, result_query, initial_value_query):
         """Initialize."""
         self.logger = logger
         self.prompt = prompt
@@ -58,34 +58,44 @@ class Test:
         self.args = args
         self.delays = delays
         self.result_query = result_query
+        self.initial_value_query = initial_value_query
+
+    def _measure(self, query):
+        i = 0
+        while i < len(query):
+            if callable(query[i][0]):
+                if len(query[i]) == 1:
+                    result = query[i][0]()
+                else:
+                    result = query[i][0](query[i][1])
+            else:
+                if len(query[i]) > 1:
+                    result = query[i][0][query[i][1]]
+                else:
+                    result = query[i][0]
+                if result is None:
+                    i = -1
+            if i == len(query) - 1:
+                print("Measured value is: {}".format(result))
+            i += 1
+        return result
 
     def execute(self):
         """Execute the test."""
         self.logger.query(self.prompt)
+        # Store the initial value if necessary
+        initial_value = self._measure(self.initial_value_query)
         for i, arg in enumerate(self.args):
             if self.command is not None:
                 print("Sending command {} with arg {}".format(self.command, arg))
                 self.command(arg)
                 time.sleep(self.delays[i])
                 print("Done!")
-        i = 0
-        while i < len(self.result_query):
-            if callable(self.result_query[i][0]):
-                if len(self.result_query[i]) == 1:
-                    result = self.result_query[i][0]()
-                else:
-                    result = self.result_query[i][0](self.result_query[i][1])
-            else:
-                if len(self.result_query[i]) > 1:
-                    result = self.result_query[i][0][self.result_query[i][1]]
-                else:
-                    result = self.result_query[i][0]
-                if result is None:
-                    i = -1
-            if i == len(self.result_query) - 1:
-                print("Measured value is: {}".format(result))
-                self.logger.write(self.identifier, result)
-            i += 1
+        final_value = self._measure(self.result_query)
+        if initial_value is None:
+            self.logger.write(self.identifier, final_value)
+        else:
+            self.logger.write(self.identifier, initial_value - final_value)
 
 
 class Suite:
@@ -97,11 +107,11 @@ class Suite:
         self.tests = []
 
     def add(self, prompt, identifier, command, args: list,
-            delays: list, result_query: list):
+            delays: list, result_query: list, initial_value_query: list):
         """Add a test to suite."""
         self.tests.append(Test(self.logger, prompt,
                                identifier, command, args,
-                               delays, result_query))
+                               delays, result_query, initial_value_query))
 
     def execute(self):
         """Execute the test suite."""
@@ -164,85 +174,87 @@ def get_suite(robot):
                   .format(distance),
                   "FLL@{}".format(distance),
                   None,
-                  [], [], measure['FLL'])
+                  [], [], measure['FLL'], [])
         suite.add("Place robot with ToF middle laser {} cm from wall"
                   .format(distance),
                   "FML@{}".format(distance),
                   None,
-                  [], [], measure['FML'])
+                  [], [], measure['FML'], [])
         suite.add("Place robot with ToF right laser {} cm from wall"
                   .format(distance),
                   "FRL@{}".format(distance),
                   None,
-                  [], [], measure['FRL'])
+                  [], [], measure['FRL'], [])
     for distance in [4, 8, 12]:
         suite.add("Place robot with IR left side {} cm from wall"
                   .format(distance),
                   "RLS@{}".format(distance),
                   None,
-                  [], [], measure['RLS'])
+                  [], [], measure['RLS'], [])
         suite.add("Place robot with IR left diagonal {} cm from wall"
                   .format(distance),
                   "RLD@{}".format(distance),
                   None,
-                  [], [], measure['RLD'])
+                  [], [], measure['RLD'], [])
         suite.add("Place robot with IR left straight {} cm from wall"
                   .format(distance),
                   "RLF@{}".format(distance),
                   None,
-                  [], [], measure['RLF'])
+                  [], [], measure['RLF'], [])
         suite.add("Place robot with IR right side {} cm from wall"
                   .format(distance),
                   "RRS@{}".format(distance),
                   None,
-                  [], [], measure['RRS'])
+                  [], [], measure['RRS'], [])
         suite.add("Place robot with IR right diagonal {} cm from wall"
                   .format(distance),
                   "RRD@{}".format(distance),
                   None,
-                  [], [], measure['RRD'])
+                  [], [], measure['RRD'], [])
         suite.add("Place robot with IR right straight {} cm from wall"
                   .format(distance),
                   "RRF@{}".format(distance),
                   None,
-                  [], [], measure['RRF'])
+                  [], [], measure['RRF'], [])
     for color in ["white", "black"]:
         suite.add("Place robot with leftmost line sensor on {}"
                   .format(color),
                   "LS leftmost@{}".format(color),
                   None,
-                  [], [], measure['LSL'])
+                  [], [], measure['LSL'], [])
         suite.add("Place robot with second line sensor from left on {}"
                   .format(color),
                   "LS second from left@{}".format(color),
                   None,
-                  [], [], measure['LSSL'])
+                  [], [], measure['LSSL'], [])
         suite.add("Place robot with third line sensor from left on {}"
                   .format(color),
                   "LS third from left@{}".format(color),
                   None,
-                  [], [], measure['LSTL'])
+                  [], [], measure['LSTL'], [])
         suite.add("Place robot with rightmost line sensor on {}"
                   .format(color),
                   "LS rightmost@{}".format(color),
                   None,
-                  [], [], measure['LSR'])
+                  [], [], measure['LSR'], [])
         suite.add("Place robot with second line sensor from right on {}"
                   .format(color),
                   "LS second from right@{}".format(color),
                   None,
-                  [], [], measure['LSSR'])
+                  [], [], measure['LSSR'], [])
         suite.add("Place robot with third line sensor from right on {}"
                   .format(color),
                   "LS third from right@{}".format(color),
                   None,
-                  [], [], measure['LSTR'])
+                  [], [], measure['LSTR'], [])
 
 
     # Testing compass by rotating 360 degrees
 
     # Place robot in free space... testing left motor
     # Place robot in free space... testing right motor
+
+    # Encoder values?
     return suite
 
 
@@ -266,10 +278,10 @@ def main():
         if gripper != "0":
             suite.add("Clear gripper space... testing gripper up-down",
                       "gripper up-down", robot.set_grabber_height,
-                      [60, 10], [5, 5], [])
+                      [60, 10], [5, 5], [], [])
             suite.add("Clear gripper space... testing gripper open-close",
                       "gripper open-close", robot.close_grabber,
-                      [80, 5], [5, 5], [])
+                      [80, 5], [5, 5], [], [])
     else:
         # Raw mode
         robot = commRaspMain.PiBot()
