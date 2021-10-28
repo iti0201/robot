@@ -169,6 +169,8 @@ def get_suite(robot):
         measure['LSSR'] = [[robot.get_second_line_sensor_from_right]]
         measure['LSTR'] = [[robot.get_third_line_sensor_from_right]]
         measure['COMPASS'] = [[robot.get_rotation]]
+        measure['LE'] = [[robot.get_left_wheel_encoder]]
+        measure['RE'] = [[robot.get_right_wheel_encoder]]
         actuate['LEFT'] = robot.set_left_wheel_speed
         actuate['RIGHT'] = robot.set_right_wheel_speed
     else:
@@ -189,6 +191,8 @@ def get_suite(robot):
         measure['LSSR'] = [[robot._adc_read], [robot.sensor, 9]]
         measure['LSTR'] = [[robot._adc_read], [robot.sensor, 10]]
         measure['COMPASS'] = [[lambda: robot._rotation_z]]
+        measure['LE'] = [[robot._encoders_get], [robot.encoder, 0]]
+        measure['RE'] = [[robot._encoders_get], [robot.encoder, 1]]
         actuate['LEFT'] = robot._motorL_set
         actuate['RIGHT'] = robot._motorR_set
 
@@ -275,11 +279,20 @@ def get_suite(robot):
               "compass",
               actuate['LEFT'],
               [12, 0], [5, 0], measure['COMPASS'], measure['COMPASS'], 3)
+    # Motor tests
+    speed_list = [8, 10, 12, 15, 18, 20, 24]
+    speed_list = speed_list + list(map(lambda x: -x, speed_list))
+    for speed in speed_list:
+        suite.add("Clear space for LEFT motor test at speed {}".format(speed),
+                  "left motor@{}".format(speed),
+                  actuate['LEFT'],
+                  [speed, 0], [4, 0], measure['LE'], measure['LE'], 1)
+    for speed in speed_list:
+        suite.add("Clear space for RIGHT motor test",
+                  "right motor@{}".format(speed),
+                  actuate['RIGHT'],
+                  [speed, 0], [4, 0], measure['RE'], measure['RE'], 1)
 
-    # Place robot in free space... testing left motor
-    # Place robot in free space... testing right motor
-
-    # Encoder values?
     return suite
 
 
