@@ -122,14 +122,15 @@ class Validator:
 
 
 class PiBot(PiBotBase):
-    def __init__(self):
+    def __init__(self, robot_nr=0, directory=""):
         super().__init__()
 
         # Read robot number
-        robot_nr = int(os.environ["ROBOT_ID"])
+        if robot_nr == 0:
+            robot_nr = int(os.environ["ROBOT_ID"])
 
         # Converters
-        self.converters = SensorConverter.make_converters("converters{}.txt".format(robot_nr))
+        self.converters = SensorConverter.make_converters(directory + "converters{}.txt".format(robot_nr))
         self.encoder_converter, \
         self.grabber_height_converter, \
         self.grabber_close_converter, \

@@ -1,3 +1,9 @@
+# Enable parent directory import
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
 import commRaspMain
 import time
 import matplotlib.pyplot as plt
