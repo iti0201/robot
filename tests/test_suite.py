@@ -84,7 +84,7 @@ class Test:
 
     def _measure(self, query):
         if len(query) == 0:
-            return 0
+            return None
         measurements = []
         for _ in range(self.measurement_count):
             measurements.append(self._single_measure(query))
@@ -193,8 +193,8 @@ def get_suite(robot):
         measure['LSSR'] = [[robot._adc_read], [robot.sensor, 9]]
         measure['LSTR'] = [[robot._adc_read], [robot.sensor, 10]]
         measure['COMPASS'] = [[lambda: robot._rotation_z]]
-        measure['LE'] = [[robot._encoders_get], [robot.encoder, 0]]
-        measure['RE'] = [[robot._encoders_get], [robot.encoder, 1]]
+        measure['LE'] = [[robot._encoders_get], [robot.encoder, 1]]
+        measure['RE'] = [[robot._encoders_get], [robot.encoder, 0]]
         actuate['LEFT'] = robot._motorL_set
         actuate['RIGHT'] = robot._motorR_set
 
