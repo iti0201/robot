@@ -83,6 +83,8 @@ class Test:
         return result
 
     def _measure(self, query):
+        if len(query) == 0:
+            return 0
         measurements = []
         for _ in range(self.measurement_count):
             measurements.append(self._single_measure(query))
