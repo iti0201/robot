@@ -93,6 +93,8 @@ class Test:
         return_value = ordered[(len(measurements) // 2)]
         print("Measured values are: {} returning {}".format(ordered,
                                                             return_value))
+        if type(return_value) == str:
+            return_value = int(return_value)
         return return_value
 
     def execute(self):
