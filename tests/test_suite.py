@@ -280,7 +280,7 @@ def get_suite(robot):
     suite.add("Clear rotation space for compass test",
               "compass",
               actuate['LEFT'],
-              [12, 0], [5, 0], measure['COMPASS'], measure['COMPASS'], 3)
+              [20, 0], [5, 0], measure['COMPASS'], measure['COMPASS'], 3)
     # Motor tests
     speed_list = [8, 10, 12, 15, 18, 20, 24]
     speed_list = speed_list + list(map(lambda x: -x, speed_list))
