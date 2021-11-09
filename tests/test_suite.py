@@ -9,9 +9,16 @@ import collections
 class Log:
     """Log class for writing results into log file."""
 
-    def __init__(self):
+    def __init__(self, robot):
         """Initialize."""
         self.log = collections.OrderedDict()
+        current_datetime = datetime.datetime.now()
+        stamp = current_datetime.strftime("%Y%m%d%H%M%S")
+        self.write("Timestamp", stamp)
+        if type(robot) == PiBot.PiBot:
+            self.write("Type", "Wrapped")
+        else:
+            self.write("Type", "Raw")
 
     def query(self, message: str):
         """
@@ -119,9 +126,9 @@ class Test:
 class Suite:
     """Full test suite containing multile single tests."""
 
-    def __init__(self):
+    def __init__(self, robot):
         """Initialize."""
-        self.logger = Log()
+        self.logger = Log(robot)
         self.tests = []
 
     def add(self, prompt, identifier, command, args: list,
@@ -151,7 +158,7 @@ def get_suite(robot):
     Returns:
       Suite instance
     """
-    suite = Suite()
+    suite = Suite(robot)
     measure = {}
     actuate = {}
     import PiBot
