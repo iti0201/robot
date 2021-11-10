@@ -16,7 +16,7 @@ class Log:
         current_datetime = datetime.datetime.now()
         stamp = current_datetime.strftime("%Y%m%d%H%M%S")
         self.write("Timestamp", stamp)
-        if type(robot) == PiBot.PiBot:
+        if type(robot) == PiBot.PiBot:  # noqa: F821
             self.write("Type", "Wrapped")
         else:
             self.write("Type", "Raw")
