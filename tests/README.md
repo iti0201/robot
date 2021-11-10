@@ -2,6 +2,8 @@
 
 To run the tests execute `python3 test_suite.py` on the robot.
 
+![Screenshot](img/screenshot.png)
+
 ## Raw mode vs Wrapped mode
 
 Raw mode uses `commRaspMain.py` (low-level API) and wrapped mode uses the `PiBot.py` high-level API.
