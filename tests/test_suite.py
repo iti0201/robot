@@ -4,6 +4,10 @@ import os
 import time
 import datetime
 import collections
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                             "..")))
+import commRaspMain  # noqa: E402
+import PiBot   # noqa: E402
 
 
 class Log:
@@ -16,7 +20,7 @@ class Log:
         current_datetime = datetime.datetime.now()
         stamp = current_datetime.strftime("%Y%m%d%H%M%S")
         self.write("Timestamp", stamp)
-        if type(robot) == PiBot.PiBot:  # noqa: F821
+        if type(robot) == PiBot.PiBot:
             self.write("Type", "Wrapped")
         else:
             self.write("Type", "Raw")
@@ -310,10 +314,6 @@ def get_suite(robot, number):
 
 def main():
     """Start the program via main entry point."""
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                 "..")))
-    import commRaspMain
-    import PiBot
     if input("Mode 0=raw / 1=wrapper: ? [0]") == "1":
         # Wrapped mode
         try:
