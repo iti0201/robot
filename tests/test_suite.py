@@ -4,14 +4,26 @@ import os
 import time
 import datetime
 import collections
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                             "..")))
+import commRaspMain  # noqa: E402
+import PiBot   # noqa: E402
 
 
 class Log:
     """Log class for writing results into log file."""
 
-    def __init__(self):
+    def __init__(self, robot, number):
         """Initialize."""
         self.log = collections.OrderedDict()
+        self.write("Robot ID", number)
+        current_datetime = datetime.datetime.now()
+        stamp = current_datetime.strftime("%Y%m%d%H%M%S")
+        self.write("Timestamp", stamp)
+        if type(robot) == PiBot.PiBot:
+            self.write("Type", "Wrapped")
+        else:
+            self.write("Type", "Raw")
 
     def query(self, message: str):
         """
@@ -119,9 +131,9 @@ class Test:
 class Suite:
     """Full test suite containing multile single tests."""
 
-    def __init__(self):
+    def __init__(self, robot, number):
         """Initialize."""
-        self.logger = Log()
+        self.logger = Log(robot, number)
         self.tests = []
 
     def add(self, prompt, identifier, command, args: list,
@@ -141,7 +153,7 @@ class Suite:
         print("Finished!")
 
 
-def get_suite(robot):
+def get_suite(robot, number):
     """
     Compile the test suite.
 
@@ -151,7 +163,7 @@ def get_suite(robot):
     Returns:
       Suite instance
     """
-    suite = Suite()
+    suite = Suite(robot, number)
     measure = {}
     actuate = {}
     import PiBot
@@ -302,10 +314,6 @@ def get_suite(robot):
 
 def main():
     """Start the program via main entry point."""
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                 "..")))
-    import commRaspMain
-    import PiBot
     if input("Mode 0=raw / 1=wrapper: ? [0]") == "1":
         # Wrapped mode
         try:
@@ -313,7 +321,7 @@ def main():
         except KeyError:
             number = int(input("Enter robot number (1-5):"))
         robot = PiBot.PiBot(robot_nr=number, directory="../")
-        suite = get_suite(robot)
+        suite = get_suite(robot, number)
         gripper = input("Include gripper tests (0=no, 1=yes)? [1]")
         if gripper != "0":
             suite.add("Clear gripper space... testing gripper up-down",
@@ -332,7 +340,8 @@ def main():
         robot._tof_init()
         robot._gyro_start()
         robot._adc_conf(3)
-        suite = get_suite(robot)
+        number = int(input("Enter robot number (1-5):"))
+        suite = get_suite(robot, number)
 
         robot._motorL_set(0)
         robot._motorR_set(0)
