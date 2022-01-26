@@ -3,6 +3,9 @@ from abc import ABC as AbstractBaseClass
 from abc import abstractmethod
 import time
 import os
+from picamera import PiCamera
+from PIL import Image
+from io import BytesIO
 
 
 class SensorConverter(AbstractBaseClass):
@@ -129,6 +132,10 @@ class PiBot(PiBotBase):
         if robot_nr == 0:
             robot_nr = int(os.environ["ROBOT_ID"])
 
+        # Camera disabled
+        self.camera_enabled = False
+        self.camera = None #{'data': None}
+
         # Converters
         self.converters = SensorConverter.make_converters(directory + "converters{}.txt".format(robot_nr))
         self.encoder_converter, \
@@ -160,6 +167,9 @@ class PiBot(PiBotBase):
         self.set_grabber_height(95)
         self.close_grabber(50)
         self._adc_conf(3)
+
+    def get_time(self):
+        return time.time()
 
     def is_simulation(self):
         return False
@@ -367,3 +377,27 @@ class PiBot(PiBotBase):
             self._servo_one_set(y)
         else:
             self._servo_two_set(y)
+
+    def enable_camera(self):
+        if not self.camera_enabled:
+            #self.objects_publisher = rospy.Publisher("/robot/camera/objects", String, queue_size=1)
+            import image_processor
+            self.image_processor = image_processor.ImageProcessor()
+            self.camera = PiCamera()
+            self.stream = BytesIO()
+            self.camera.resolution = (1024, 768)
+            self.camera.start_preview()
+            time.sleep(2)
+            self.camera_enabled = True
+
+    def get_camera_objects(self):
+        if not self.camera_enabled:
+            self.enable_camera()
+        self.image_processor.set_width(1024)
+        self.image_processor.set_height(768)
+        #self.stream.truncate()
+        self.stream = BytesIO()
+        self.camera.capture(self.stream, format='jpeg', use_video_port=True)
+        self.stream.seek(0)
+        self.image = Image.open(self.stream)
+        return self.image_processor.get_objects(self.image)
