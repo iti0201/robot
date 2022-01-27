@@ -321,21 +321,21 @@ class PiBot(PiBotBase):
         """
         :param percentage: -99 .. 99
         """
-        self._motorL_set(percentage)
+        self._motorL_set(-percentage)
 
     @Validator.validate_speed_percentage
     def set_right_wheel_speed(self, percentage: int):
         """
         :param percentage: -99 .. 99
         """
-        self._motorR_set(percentage)
+        self._motorR_set(-percentage)
 
     @Validator.validate_speed_percentage
     def set_wheels_speed(self, percentage: int):
         """
         :param percentage: -99 .. 99
         """
-        self._motorB_set(percentage)
+        self._motorB_set(-percentage)
 
     def _update_encoders(self):
         while not self._encoders_get() or any(map(lambda encoder: encoder is None, self.encoder)):
@@ -385,7 +385,7 @@ class PiBot(PiBotBase):
             self.image_processor = image_processor.ImageProcessor()
             self.camera = PiCamera()
             self.stream = BytesIO()
-            self.camera.resolution = (1024, 768)
+            self.camera.resolution = (480, 320)
             self.camera.start_preview()
             time.sleep(2)
             self.camera_enabled = True
@@ -393,9 +393,8 @@ class PiBot(PiBotBase):
     def get_camera_objects(self):
         if not self.camera_enabled:
             self.enable_camera()
-        self.image_processor.set_width(1024)
-        self.image_processor.set_height(768)
-        #self.stream.truncate()
+        self.image_processor.set_width(480)
+        self.image_processor.set_height(320)
         self.stream = BytesIO()
         self.camera.capture(self.stream, format='jpeg', use_video_port=True)
         self.stream.seek(0)

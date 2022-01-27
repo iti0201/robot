@@ -23,11 +23,6 @@ class ImageProcessor:
         high = np.array([hue, 255, 255])
         return cv2.inRange(image, low, high)
 
-    def convert_sensor_msgs_image_to_opencv_image(self, sensor_image):
-        if self.height is not None and self.width is not None:
-            return np.ndarray((self.height, self.width, 3), np.uint8, buffer=sensor_image)
-        return None
-
     def process_mask(self, identifier, mask, image, color, outfile=None):
         contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2:]
         return_value = []
@@ -44,8 +39,8 @@ class ImageProcessor:
         src = cv2.medianBlur(src, 17)
         hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
         kernel = np.ones((47, 47), np.uint8)
-        mask_red = cv2.morphologyEx(self.get_mask(hsv, 0, 170), cv2.MORPH_CLOSE, kernel)
-        mask_blue = cv2.morphologyEx(self.get_mask(hsv, 240/2, 170), cv2.MORPH_CLOSE, kernel)
+        mask_red = cv2.morphologyEx(self.get_mask(hsv, 0, 130), cv2.MORPH_CLOSE, kernel)
+        mask_blue = cv2.morphologyEx(self.get_mask(hsv, 110, 130), cv2.MORPH_CLOSE, kernel)
         return_value = self.process_mask("red sphere", mask_red, src, (255, 255, 255), outfile) + \
                        self.process_mask("blue sphere", mask_blue, src, (0, 255, 0), outfile)
         #outfile = "temp.jpg"
@@ -54,9 +49,7 @@ class ImageProcessor:
         return return_value
 
     def get_objects(self, image, message=None):
-        #src = self.convert_sensor_msgs_image_to_opencv_image(image)
         src = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-        #print(f"{src}")
         if src is None:
             return []
         result = self.process_image(src)
