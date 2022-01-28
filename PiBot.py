@@ -3,9 +3,8 @@ from abc import ABC as AbstractBaseClass
 from abc import abstractmethod
 import time
 import os
-from picamera import PiCamera
-from PIL import Image
 from io import BytesIO
+from PIL import Image
 
 
 class SensorConverter(AbstractBaseClass):
@@ -380,7 +379,7 @@ class PiBot(PiBotBase):
 
     def enable_camera(self):
         if not self.camera_enabled:
-            #self.objects_publisher = rospy.Publisher("/robot/camera/objects", String, queue_size=1)
+            from picamera import PiCamera
             import image_processor
             self.image_processor = image_processor.ImageProcessor()
             self.camera = PiCamera()
