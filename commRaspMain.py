@@ -42,12 +42,16 @@ class PiBot:
             self._TofHolder(13, 0x2c, 26)
         ]
 
-        self._imu = icm.ICM20948()
+        self._imu_ready = False
 
         self._rotation_z = 0.0
         self._gyro_thread = None
         self._gyro_running = False
         self._gyro_lock = threading.Lock()
+
+    def init_imu(self):
+        self._imu = icm.ICM20948()
+        self._imu_ready = True
 
     def __del__(self):
         if self._tof_master:
@@ -67,6 +71,9 @@ class PiBot:
         """
         Starts the gyro summarizer thread.
         """
+        if not self._imu_ready:
+            self.init_imu()
+
         if not self._gyro_running:
             self._rotation_z = 0.0
             self._gyro_running = True
@@ -378,8 +385,10 @@ class PiBot:
 
         Returns True upon a successful read.
         """
-
         self._gyro_lock.acquire()
+        if not self._imu_ready:
+            self.init_imu()
+
 
         x, y, z = self._imu.read_magnetometer_data()
         self.compass = [x, y, z]
@@ -393,8 +402,9 @@ class PiBot:
         Updates the accelerometer and gyro values of the bot. They will be stored
         under the self.gyro list.
         """
-
         self._gyro_lock.acquire()
+        if not self._imu_ready:
+            self.init_imu()
 
         ax, ay, az, gx, gy, gz = self._imu.read_accelerometer_gyro_data()
 

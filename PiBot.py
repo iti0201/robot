@@ -135,6 +135,9 @@ class PiBot(PiBotBase):
         self.camera_enabled = False
         self.camera = None #{'data': None}
 
+        # Start with IMU off
+        self.imu_ready = False
+
         # Converters
         self.converters = SensorConverter.make_converters(directory + "converters{}.txt".format(robot_nr))
         self.encoder_converter, \
@@ -160,10 +163,13 @@ class PiBot(PiBotBase):
         while not all(map(lambda fn: fn(), [self._motors_enable, self._encoders_enable, self._servo_enable])):
             self.sleep(0.05)
         self._tof_init()
-        self._gyro_start()
         self.set_grabber_height(95)
         self.close_grabber(50)
         self._adc_conf(3)
+
+    def gyro_start(self):
+        self._gyro_start()
+        self.imu_ready = True
 
     def get_time(self):
         return time.time()
@@ -326,6 +332,9 @@ class PiBot(PiBotBase):
         return self.encoder_converter.get(self.encoder[1])
 
     def get_rotation(self):
+        if not self.imu_ready:
+            self.gyro_start()
+            self.sleep(0.5)
         return self._rotation_z
 
     def _enable_servo_if_not(self):
