@@ -290,7 +290,7 @@ class ICM20948:
 		self.write(0x05, 0x81)
 
 		if not self.mag_read(AK09916_WIA) == AK09916_CHIP_ID:
-                        time.sleep(1)
+                        time.sleep(0.1)
                         return self.__init__(cs, init_wiring_pi)
 			#raise RuntimeError("Unable to find AK09916")
 

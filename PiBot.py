@@ -148,13 +148,11 @@ class PiBot(PiBotBase):
         self.servo_enabled = True
 
         # Initialize timestamps
-        self.first_block_last_update = 0
-        self.second_block_last_update = 0
         self.sensors_last_update = 0
         self.tof_sensors_last_update = 0
 
         # Constants
-        self.UPDATE_TIME = 0.005
+        self.UPDATE_TIME = 0.03
         self.WHEEL_DIAMETER = 0.03
         self.AXIS_LENGTH = 0.14
 
@@ -192,22 +190,6 @@ class PiBot(PiBotBase):
     def _tof_values_correct(self) -> bool:
         return PiBot._values_correct(self.tof_values, 0, 3)
 
-    def _update_first_sensor_block(self):
-        timestamp = time.time()
-        if timestamp - self.first_block_last_update >= self.UPDATE_TIME:
-            self._adc_read(1)
-            while not self._sensor_values_correct(0, 8):
-                self._adc_read(1)
-            self.first_block_last_update = timestamp
-
-    def _update_second_sensor_block(self):
-        timestamp = time.time()
-        if timestamp - self.second_block_last_update >= self.UPDATE_TIME:
-            self._adc_read(2)
-            while not self._sensor_values_correct(8, 15):
-                self._adc_read(2)
-            self.second_block_last_update = timestamp
-
     def _update_sensors(self):
         timestamp = time.time()
         if timestamp - self.sensors_last_update >= self.UPDATE_TIME:
@@ -217,12 +199,7 @@ class PiBot(PiBotBase):
             self.sensors_last_update = timestamp
 
     def _update_sensor_block(self, block_nr):
-        if block_nr == 1:
-            self._update_first_sensor_block()
-        elif block_nr == 2:
-            self._update_second_sensor_block()
-        else:
-            self._update_sensors()
+        self._update_sensors()
 
     def _update_tof_sensors(self):
         timestamp = time.time()
