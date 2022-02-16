@@ -70,7 +70,7 @@ class EncoderConverter(SensorConverter):
         self.degree_per_tick = degree_per_tick
 
     def get(self, x: int):
-        return -self.degree_per_tick * int(x)
+        return self.degree_per_tick * int(x)
 
 
 class LineSensorConverter(SensorConverter):
@@ -325,11 +325,11 @@ class PiBot(PiBotBase):
 
     def get_right_wheel_encoder(self) -> int:
         self._update_encoders()
-        return -self.encoder_converter.get(self.encoder[0])
+        return self.encoder_converter.get(self.encoder[0])
 
     def get_left_wheel_encoder(self) -> int:
         self._update_encoders()
-        return -self.encoder_converter.get(self.encoder[1])
+        return self.encoder_converter.get(self.encoder[1])
 
     def get_rotation(self):
         if not self.imu_ready:
