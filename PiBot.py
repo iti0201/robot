@@ -197,30 +197,27 @@ class PiBot(PiBotBase):
         return PiBot._values_correct(self.tof_values, 0, 3)
 
     def _update_sensors(self):
-        timestamp = time.time()
-        if timestamp - self.sensors_last_update >= self.UPDATE_TIME:
+        if time.time() - self.sensors_last_update >= self.UPDATE_TIME:
             self._adc_read()
             while not self._sensor_values_correct():
                 self._adc_read()
-            self.sensors_last_update = timestamp
+            self.sensors_last_update = time.time()
 
     def _update_sensor_block(self, block_nr):
         self._update_sensors()
 
     def _update_tof_sensors(self):
-        timestamp = time.time()
-        if timestamp - self.tof_sensors_last_update >= self.UPDATE_TIME:
+        if time.time() - self.tof_sensors_last_update >= self.UPDATE_TIME:
             self._tof_read()
             while not self._tof_values_correct():
                 self._tof_read()
-            self.tof_sensors_last_update = timestamp
+            self.tof_sensors_last_update = time.time()
 
     def _update_imu(self):
-        timestamp = time.time()
-        if timestamp - self.imu_last_update >= self.UPDATE_TIME:
+        if time.time() - self.imu_last_update >= self.UPDATE_TIME:
             self._imu_read_gyro()
             self._imu_read_compass()
-            self.imu_last_update = timestamp
+            self.imu_last_update = time.time()
 
     def _get_value(self, sensor_index, sensor_block_nr):
         self._update_sensor_block(sensor_block_nr)
